@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat Room Client</title>
+    <script src="https://cdn.socket.io/socket.io-3.0.3.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+    <ul id="messages"></ul>
+    <input id="name" autocomplete="off" />
+    <input id="message" autocomplete="off" /><button onclick="sendMessage()">Send</button>
+    <script type="text/javascript">
+        var socket = io.connect('http://127.0.0.1:5000');
+        socket.on('connect', function() {
+            var now = new Date();
+            var timestamp = now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
+            socket.emit('message', { msg: 'User has connected!', timestamp: timestamp });
+        });
+        // 处理在线用户列表
+        socket.on('online_users', function(users) {
+            // 清空在线用户列表
+            $('#online-users').empty();
+            // 添加每个在线用户
+            users.forEach(function(user) {
+                $('#online-users').append($('<li>').text(user));
+            });
+        });
+        socket.on('receive_message', function(data) {
+            $('#messages').append($('<li>').text(data['msg']));
+        });
+
+        function sendMessage() {
+            var message = $('#message').val();
+            var username = $('#name').val();
+            var now = new Date();
+            var timestamp = now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
+            var messageWithTimestamp = username + ": " + message + " (sent at " + timestamp + ")";
+
+            socket.emit('message', { msg: messageWithTimestamp, timestamp: timestamp });
+
+            $('#message').val('');
+        }
+    </script>
+    <ul id="online-users"></ul>
+</body>
+</html>
