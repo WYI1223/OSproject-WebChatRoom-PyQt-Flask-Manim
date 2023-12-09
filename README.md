@@ -28,6 +28,9 @@
     - [x] delete
     - [ ] move
 - [ ] thread system Sim
+- [ ] ChatRoom Server
+  - [X] 服务端客户端可连接，发送消息
+  - [X] 记录聊天记录并同步以及保存。
 
 
 

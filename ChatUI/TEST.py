@@ -187,7 +187,7 @@ class MyMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def init_socketio(self):
         # Connect to the SocketIO server
         self.sio = socketio.Client()
-        self.sio.connect('http://127.0.0.1:5000', namespaces=['/'])
+        self.sio.connect('http://127.0.0.1:5000')
         self.sio.on('connect', self.handle_connect)
         self.sio.on('disconnect', self.handle_disconnect)
         self.sio.on('online_users', self.handle_online_users)

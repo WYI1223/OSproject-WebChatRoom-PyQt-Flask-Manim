@@ -1,67 +1,58 @@
-import time
-
-def initialize_system_enhanced():
-    # 初始化 Table, Disk, catalog 文件
-    with open("Table.txt", "w") as table, open("Disk.txt", "w") as disk, open("catalog.txt", "w") as catalog:
-        # 初始化 Table 文件内容
-        table.write("__EMPTY__\n" * 1024)  # 假设有 1024 个块
-
-        # 初始化 Disk 文件内容
-        disk.write(" " * 1024 * 1024)  # 假设每个块有 1KB，总共 1MB 的空间
-
-        # 初始化 catalog 文件内容
-        catalog.write("Name,Identifier,Type,Parent,StartBlock,Size\n")  # 文件名，标识符，类型，父目录，开始块号，大小
+from DISK import diskSim
+from Memory import memorySim, virtualMemorySim
+from flask import Flask, render_template, request
+from flask_socketio import SocketIO
 
 
-def write_file_with_identifier(name, data, parent="root", file_type="file"):
-    # 生成一个独特的标识符
-    unique_id = f"{name}_{int(time.time())}"
-
-    try:
-        with open("Table.txt", "r") as table:
-            blocks = table.readlines()
-    except FileNotFoundError:
-        with open("Table.txt", "w+") as table:
-            blocks = table.readlines()
+class ChatApp:
+    def __init__(self):
+        self.app = Flask(__name__)
+        self.app.config['SECRET_KEY'] = 'your_secret_key'
+        self.socketio = SocketIO(self.app, cors_allowed_origins="*")
 
 
-    # 寻找连续的空闲块
-    start_blocks = []
-    free_blocks = 0
-    required_blocks = len(data) // 1024 + (1 if len(data) % 1024 > 0 else 0)
+        # 绑定路由和事件处理函数
+        self.app.route('/')(self.index)
+        self.socketio.on('connect')(self.handle_connect)
+        self.socketio.on('disconnect')(self.handle_disconnect)
+        self.socketio.on('message')(self.handle_message)
 
-    for i, block in enumerate(blocks):
-        if block.strip() == "__EMPTY__":
-            if free_blocks == 0:
-                start_blocks.append(i)
-            free_blocks += 1
-            if free_blocks >= required_blocks:
-                break
-        else:
-            free_blocks = 0
+        # 初始化服务器内存以及硬盘
+        self.online_users = set()
+        # self.memoryScheduler = Memory.memoryScheduler("server1", 100)
+        self.diskSim = diskSim.diskSim("server1")
+        self.virtualMemorySim = virtualMemorySim.virtualMemorySim("server1")
+        self.memorySim = memorySim.memorySim(100)
 
-    if free_blocks >= required_blocks:
-        # 更新 Table 和 Disk 文件
-        with open("Table.txt", "w") as table, open("Disk.txt", "r+") as disk:
-            current_block = 0
-            for start_block in start_blocks:
-                for i in range(start_block, start_block + free_blocks):
-                    blocks[i] = f"Used by {unique_id}\n"
-                    if current_block * 1024 < len(data):
-                        disk.seek(i * 1024)  # 定位到开始块
-                        disk.write(data[current_block * 1024:(current_block + 1) * 1024])  # 写入数据
-                        current_block += 1
-            table.writelines(blocks)
+        # 储存聊天记录 [(time,data),(time,data),(time,data)]
+        self.record = []
 
-        # 更新 catalog 文件
-        with open("catalog.txt", "a") as catalog:
-            catalog.write(f"{name},{unique_id},{file_type},{parent},{start_blocks[0]},{len(data)}\n")
+    def index(self):
+        return render_template('chat.html')
 
-    else:
-        print("Not enough space!")
+    def handle_connect(self):
+        user_id = request.sid
+        self.online_users.add(user_id)
+        self.update_online_users()
+        self.socketio.sleep(0.5)
+        self.socketio.emit('message_record', self.record, room=user_id)
+
+    def handle_disconnect(self):
+        user_id = request.sid
+        self.online_users.discard(user_id)
+        self.update_online_users()
+
+    def update_online_users(self):
+        self.socketio.emit('online_users', list(self.online_users))
+
+    def handle_message(self, data):
+        self.socketio.emit('receive_message', data)
+        self.record.append(data)
+
+    def run(self):
+        self.socketio.run(self.app, debug=True, allow_unsafe_werkzeug=True)
 
 
-initialize_system_enhanced()
-write_file_with_identifier("myFolder", "", "root", "dir")
-write_file_with_identifier("myFile", "a" * 1024, "myFolder", "file")
-
+if __name__ == '__main__':
+    chat_app = ChatApp()
+    chat_app.run()
