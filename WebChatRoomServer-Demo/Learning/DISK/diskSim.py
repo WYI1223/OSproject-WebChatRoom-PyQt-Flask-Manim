@@ -2,11 +2,12 @@ import time
 import os
 import ast
 
-
 class DiskSim:
+
 
     def __init__(self, location):
         self.location = location
+        self.unique_id = 1
         if not os.path.exists(self.location):
             os.makedirs(self.location)
             self.initialize_system_enhanced()
@@ -14,11 +15,15 @@ class DiskSim:
         else:
             with open(self.location + "\\Boot.txt", "r") as boot:
                 self.freeSpace = int(boot.read())
+        self.diskLoc = self.location + "\\Disk.txt"
+        self.catalogLoc = self.location + "\\catalog.txt"
+        self.tableLoc = self.location + "\\Table.txt"
+        self.bootLoc = self.location + "\\Boot.txt"
 
     def initialize_system_enhanced(self):
         # 初始化 Table, Disk, catalog 文件
-        with open(self.location + "\\Table.txt", "w") as table, open(self.location + "\\Disk.txt", "w") as disk, open(
-                self.location + "\\catalog.txt", "w") as catalog, open(self.location + "\\Boot.txt", "w") as boot:
+        with open(self.tableLoc, "w") as table, open(self.diskLoc, "w") as disk, open(
+                self.catalogLoc, "w") as catalog, open(self.bootLoc, "w") as boot:
             # 初始化 Boot， 用于记录磁盘的状态
             boot.write("1024")
 
@@ -31,11 +36,12 @@ class DiskSim:
             # 初始化 catalog 文件内容
             catalog.write(
                 "[Identifier,Name,Type,Parent (1 root),Children [1,2,3],StartBlock,Size]\n"
-                "[0000, 'root', 'dir', 0, [], 0, 0]")  # 文件名，标识符，类型，父目录(目录行号)，开始块号([目录行号])，大小
+                "[0000, 'root', 'dir', 0, [], 0, 0]\n"
+                +"\n"*1024)  # 文件名，标识符，类型，父目录(目录行号)，开始块号([目录行号])，大小
 
     def free_space(self):
         # 读取Table文件，返回空闲块的数量
-        with open(self.location + "Table.txt", "r") as table:
+        with open(self.tableLoc, "r") as table:
             blocks = table.readlines()
         free_blocks = 0
         for i, block in enumerate(blocks):
@@ -47,12 +53,14 @@ class DiskSim:
         targetLoc = parent.split("/")
         if targetLoc[0] == "root":
             targetLoc[0] = 1
-        with open(self.location + "\\catalog.txt", "r") as catalog:
+        with open(self.catalogLoc, "r") as catalog:
             lines = catalog.readlines()
         # 从根目录开始寻找目标文件夹
         for i in range(len(targetLoc) - 1):
             if i == 0:
                 children = eval(lines[1])[4]
+            if children == [False]:
+                return False
             if len(children) == 0:
                 return False
             else:
@@ -71,11 +79,36 @@ class DiskSim:
 
         return targetLoc[-1]
 
+    def find_first_empty_table(self):
+        with open(self.catalogLoc, "r") as catalog:
+            lines = catalog.readlines()
+        for i, block in enumerate(lines):
+            if i <= 1:
+                continue
+            if block == '\n':
+                return i
+        return False
+
+    def replace_line_by_index(self, file_path, index, newcontent=""):
+        # Step 1: Read the file and load its content into a list
+        with open(file_path, 'r') as file:
+            lines = file.readlines()
+
+        # Ensure the index is within the range of the file's lines
+        if 0 <= index < len(lines):
+            # Step 2: Remove the specified line
+            lines[index] = newcontent
+            # Step 3: Write the updated list back to the file
+            with open(file_path, 'w') as file:
+                file.writelines(lines)
+        else:
+            print(f"Index {index} is out of range for the file.")
+
     def create_dir(self, name, parent="root", file_type="dir"):
         # 生成一个独特的标识符
-        unique_id = f"{name}_{int(time.time())}"
 
-        with open(self.location + "\\catalog.txt", "a+") as catalog:
+
+        with open(self.catalogLoc, "r") as catalog:
             catalog.seek(0)
             lines = catalog.readlines()
 
@@ -84,32 +117,33 @@ class DiskSim:
                 print("!!!parent not found")
                 return False
 
+            inerset_line = self.find_first_empty_table()
             # Convert the string from the file into a list object
             parentCatalog = ast.literal_eval(lines[parent_num].strip())
-            parentCatalog[4].append(len(lines))
+            parentCatalog[4].append(inerset_line)
 
             # Convert back to string and update the line
-            lines[parent_num] = str(parentCatalog) + "\n"
+            self.replace_line_by_index(self.catalogLoc, parent_num, str(parentCatalog) + "\n")
 
             # Prepare new entry as a string
-            new_entry = str([unique_id, name, file_type, parent_num, [], 9999, 0]) + "\n"
-
-            lines.append(new_entry)
+            new_entry = str([self.unique_id , name, file_type, parent_num, [], 9999, 0]) + "\n"
+            self.unique_id += 1
+            self.replace_line_by_index(self.catalogLoc, inerset_line, new_entry)
 
             # Write updated lines back to catalog
-            catalog.seek(0)
-            catalog.truncate()
-            catalog.writelines(lines)
+            # catalog.seek(0)
+            # catalog.truncate()
+            # catalog.writelines(lines)
         return True
 
     def write_file_with_identifier(self, name, data, parent="root", file_type="file"):
         # 生成一个独特的标识符
-        unique_id = f"{name}_{int(time.time())}"
 
-        with open(self.location + "\\Table.txt", "r") as table:
+        with open(self.tableLoc, "r") as table:
             blocks = table.readlines()
 
-        start_blocks = []
+        insert_line = self.find_first_empty_table()
+
         w2b = []
         free_blocks = 0
         required_blocks = len(data) // 1024 + (1 if len(data) % 1024 > 0 else 0)
@@ -117,7 +151,7 @@ class DiskSim:
         if required_blocks > self.freeSpace:
             return False
 
-        # 寻找连续的空闲块
+        # 寻找空闲块
         for i, block in enumerate(blocks):
             if block.strip() == "__EMPTY__":
                 free_blocks += 1
@@ -128,7 +162,7 @@ class DiskSim:
 
         print(w2b, "w2b")
 
-        with open(self.location + "\\catalog.txt", "a+") as catalog:
+        with open(self.catalogLoc, "r") as catalog:
             catalog.seek(0)
             lines = catalog.readlines()
 
@@ -139,24 +173,24 @@ class DiskSim:
 
             # Convert the string from the file into a list object
             parentCatalog = ast.literal_eval(lines[parent_num].strip())
-            parentCatalog[4].append(len(lines))
+            parentCatalog[4].append(insert_line)
 
             # Convert back to string and update the line
-            lines[parent_num] = str(parentCatalog) + "\n"
+            self.replace_line_by_index(self.catalogLoc, parent_num, str(parentCatalog) + "\n")
+
 
             # Prepare new entry as a string
             first_block = w2b[0] if len(w2b) > 0 else 0
-            new_entry = str([unique_id, name, file_type, parent_num, [], first_block, len(data)]) + "\n"
-
-            lines.append(new_entry)
+            new_entry = str([self.unique_id, name, file_type, parent_num, [], first_block, len(data)]) + "\n"
+            self.unique_id += 1
+            self.replace_line_by_index(self.catalogLoc, insert_line, new_entry)
 
             # Write updated lines back to catalog
-            with open(self.location + "\\Table.txt", "w+") as table, open(self.location + "\\Disk.txt", "r+") as disk:
+            with open(self.tableLoc, "w+") as table, open(self.diskLoc, "r+") as disk:
                 # 更新 Table 和 Disk 文件
                 for i in range(len(w2b)):
                     start_blocks = w2b[i]
-                    blocks[start_blocks] = f"Used by {unique_id}\n"
-                    self.freeSpace -= 1
+                    blocks[start_blocks] = f"{self.unique_id}\n"
                     disk.seek(start_blocks * 1028)  # 定位到开始块
                     if i + 1 == len(w2b):
                         disk.write(data[i * 1024:])
@@ -164,76 +198,106 @@ class DiskSim:
                         disk.write(data[i * 1024:(i + 1) * 1024] + "{:2x}\n".format(
                             w2b[i + 1] - w2b[i]))  # 写入数据 + 下一块的索引(十六进制偏移量)
                 table.writelines(blocks)
-
-            catalog.seek(0)
-            catalog.truncate()
-            catalog.writelines(lines)
-        with open(self.location + "\\Boot.txt", "w") as boot:
+            self.freeSpace -= len(w2b)
+            # catalog.seek(0)
+            # catalog.truncate()
+            # catalog.writelines(lines)
+        with open(self.bootLoc, "w") as boot:
             boot.write(str(self.freeSpace))
 
         return True
 
-    def delete_file(self, path):
+    def read_file(self, path:str):
+        target = self.get_line_of_parent(path)
+        if target is False:
+            return False
+        with open(self.catalogLoc, "r") as catalog:
+            lines = catalog.readlines()
+            AimCatalog = eval(lines[target])
+        if AimCatalog[2] == "dir":
+            # 返回目录下的文件名
+            # [Identifier,Name,Type,Parent (1 root),Children [1,2,3],StartBlock,Size]
+            return AimCatalog[4]
+        else:
 
-        parent_path, name = os.path.split(path)
+            # 返回文件内容
+            # 如果文件大小为0，返回空字符串
+            if AimCatalog[6] == 0:
+                return ""
+            with open(self.diskLoc, "r") as disk:
+                # 定位到文件开始块
+                disk.seek(AimCatalog[5] * 1028)
+                # 如果文件大小小于1024，直接读取
+                if AimCatalog[6] < 1024:
+                    return disk.read(AimCatalog[6])
+                # 如果文件大小大于1024，需要读取多个块
+                else:
+                    block_num = AimCatalog[6] // 1024 + (1 if AimCatalog[6] % 1024 > 0 else 0)
+                    data = ""
+                    for i in range(block_num):
+                        data += disk.read(1024)
+                        disk.seek(int(disk.read(2), 16) * 1028)
+                    return data
 
-        # Get the parent directory's line number
-        parent_num = self.get_line_of_parent(parent_path)
-        if parent_num is False:
-            print("Parent directory not found")
+
+
+    def delete(self, path):
+        target_line = self.get_line_of_parent(path)
+        if target_line is False:
+            print("!!!target not found")
             return False
 
-        # Locate the file in the catalog
-        with open(self.location + "\\catalog.txt", "r") as catalog:
+        with open(self.catalogLoc, "r") as catalog:
             lines = catalog.readlines()
 
-        file_line_num = None
-        for line in lines:
-            entry = ast.literal_eval(line.strip())
-            if entry[1] == name and entry[3] == parent_num:
-                file_line_num = lines.index(line)
-                start_block = entry[5]
-                size = entry[6]
-                break
-        else:
-            print("File not found")
-            return False
+        target_entry = eval(lines[target_line])
 
-        # Remove the file entry from the catalog and update the parent directory
-        with open(self.location + "\\catalog.txt", "r+") as catalog:
-            parent_entry = ast.literal_eval(lines[parent_num].strip())
-            parent_entry[4].remove(file_line_num)
-            lines[parent_num] = str(parent_entry) + "\n"
+        # If the target is a directory, recursively delete its contents
+        if target_entry[2] == "dir":
+            for child in target_entry[4]:
+                child_path = path + "/" + eval(lines[child])[1]
+                self.delete(child_path)
 
-            catalog.seek(0)
-            catalog.truncate()
-            for i, line in enumerate(lines):
-                if i != file_line_num:
-                    catalog.write(line)
 
-        # Update the Table and Disk
-        with open(self.location + "\\Table.txt", "r+") as table, open(self.location + "\\Disk.txt", "r+") as disk:
+        # Remove the target entry from the catalog
+        self.replace_line_by_index(self.catalogLoc, target_line, "")
+
+        # Update parent directory's children list
+        parent_line = target_entry[3]
+        if parent_line != 1:  # not root
+            parent_entry = eval(lines[parent_line].strip())
+            parent_entry[4].remove(target_line)
+            self.replace_line_by_index(self.catalogLoc, parent_line, str(parent_entry) + "\n")
+
+        # Free up the blocks used by the file or the directory
+        if target_entry[2] == "file":
+            self.free_blocks(target_entry[5], target_entry[6])
+
+    def free_blocks(self, start_block, size):
+        with open(self.tableLoc, "r") as table:
             blocks = table.readlines()
-            table.seek(0)
-            table.truncate()
-            remaining_size = size
-            current_block = start_block
-            while remaining_size > 0:
-                blocks[current_block] = "__EMPTY__\n"
-                self.freeSpace += 1
+
+        block_num = size // 1024 + (1 if size % 1024 > 0 else 0)
+        current_block = start_block
+
+        for _ in range(block_num):
+            self.replace_line_by_index(self.tableLoc, current_block, "__EMPTY__\n")
+            with open(self.diskLoc, "r+") as disk:
                 disk.seek(current_block * 1028)
-                disk_data = disk.read(1024)
-                remaining_size -= len(disk_data)
-                if remaining_size > 0:
-                    current_block = int(disk.read(2), 16)
-            table.writelines(blocks)
+                # 当目前数据块为最后一个块时，直接清空
+                if block_num == 1:
+                    self.replace_line_by_index(self.diskLoc, current_block, " " * 1024 + "__\n")
+                    self.replace_line_by_index(self.tableLoc, current_block, "__EMPTY__\n")
+                    break
+                data = disk.read(1026)  # Read block data and next block index
+                next_block_str = data[-2:] # Get next block index
+                next_block = current_block + int(next_block_str, 16)
 
-        # Update the Boot file
-        with open(self.location + "\\Boot.txt", "w") as boot:
-            boot.write(str(self.freeSpace))
+        self.freeSpace += block_num
 
-        return True
 
+
+# Usage example
 
 diskSim = DiskSim("Test")
 diskSim.initialize_system_enhanced()
@@ -243,3 +307,8 @@ diskSim.write_file_with_identifier("test", "test", "root/test", "file")
 diskSim.create_dir("largefolder", "root", "dir")
 diskSim.create_dir("largefolder2", "root/largefolder", "dir")
 diskSim.write_file_with_identifier("test", 'A' * 3000, "root/largefolder/largefolder2", "file")
+diskSim.write_file_with_identifier("test", 'A' * 3000, "root/largefolder", "file")
+# diskSim.create_dir("largefolder1", "root", "dir")
+#
+# print(diskSim.read_file("root/largefolder/largefolder2/test"))
+# diskSim.delete("root/largefolder")

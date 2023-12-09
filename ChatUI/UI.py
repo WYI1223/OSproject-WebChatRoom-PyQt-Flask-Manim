@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import generated_ui
 
-class MyMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
+class MyMainWindow(QtWidgets.QMainWindow, generated_ui.Ui_MainWindow):
     def __init__(self):
         super(MyMainWindow, self).__init__()
         self.setupUi(self)
