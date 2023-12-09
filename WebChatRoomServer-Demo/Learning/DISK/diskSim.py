@@ -26,6 +26,7 @@ class DiskSim:
                 self.catalogLoc, "w") as catalog, open(self.bootLoc, "w") as boot:
             # 初始化 Boot， 用于记录磁盘的状态
             boot.write("1024")
+            self.freeSpace = 1024
 
             # 初始化 Table 文件内容，每个块占一行。开始行为当前disk状态，包括空闲块和已用块数量。
             table.write("__EMPTY__\n" * 1024)  # 假设有 1024 个块
@@ -160,7 +161,7 @@ class DiskSim:
                 if required_blocks == 0:
                     break
 
-        print(w2b, "w2b")
+        # print(w2b, "w2b")
 
         with open(self.catalogLoc, "r") as catalog:
             catalog.seek(0)
@@ -194,11 +195,13 @@ class DiskSim:
                     disk.seek(start_blocks * 1028)  # 定位到开始块
                     if i + 1 == len(w2b):
                         disk.write(data[i * 1024:])
+                        self.freeSpace -= 1
                     else:
                         disk.write(data[i * 1024:(i + 1) * 1024] + "{:2x}\n".format(
                             w2b[i + 1] - w2b[i]))  # 写入数据 + 下一块的索引(十六进制偏移量)
+                        self.freeSpace -= 1
                 table.writelines(blocks)
-            self.freeSpace -= len(w2b)
+
             # catalog.seek(0)
             # catalog.truncate()
             # catalog.writelines(lines)
@@ -260,7 +263,7 @@ class DiskSim:
 
 
         # Remove the target entry from the catalog
-        self.replace_line_by_index(self.catalogLoc, target_line, "")
+        self.replace_line_by_index(self.catalogLoc, target_line, "\n")
 
         # Update parent directory's children list
         parent_line = target_entry[3]
@@ -274,26 +277,27 @@ class DiskSim:
             self.free_blocks(target_entry[5], target_entry[6])
 
     def free_blocks(self, start_block, size):
-        with open(self.tableLoc, "r") as table:
-            blocks = table.readlines()
-
+        # 释放文件占用的块
         block_num = size // 1024 + (1 if size % 1024 > 0 else 0)
         current_block = start_block
+        reamining_blocks = block_num
 
         for _ in range(block_num):
             self.replace_line_by_index(self.tableLoc, current_block, "__EMPTY__\n")
             with open(self.diskLoc, "r+") as disk:
                 disk.seek(current_block * 1028)
                 # 当目前数据块为最后一个块时，直接清空
-                if block_num == 1:
+                if reamining_blocks == 1:
                     self.replace_line_by_index(self.diskLoc, current_block, " " * 1024 + "__\n")
-                    self.replace_line_by_index(self.tableLoc, current_block, "__EMPTY__\n")
                     break
                 data = disk.read(1026)  # Read block data and next block index
                 next_block_str = data[-2:] # Get next block index
-                next_block = current_block + int(next_block_str, 16)
+                current_block = current_block + int(next_block_str, 16)
+                reamining_blocks -= 1
+                self.freeSpace += 1
+        with open(self.bootLoc, "w") as boot:
+            boot.write(str(self.freeSpace))
 
-        self.freeSpace += block_num
 
 
 
@@ -308,7 +312,18 @@ diskSim.create_dir("largefolder", "root", "dir")
 diskSim.create_dir("largefolder2", "root/largefolder", "dir")
 diskSim.write_file_with_identifier("test", 'A' * 3000, "root/largefolder/largefolder2", "file")
 diskSim.write_file_with_identifier("test", 'A' * 3000, "root/largefolder", "file")
-# diskSim.create_dir("largefolder1", "root", "dir")
-#
-# print(diskSim.read_file("root/largefolder/largefolder2/test"))
-# diskSim.delete("root/largefolder")
+diskSim.create_dir("largefolder1", "root", "dir")
+diskSim.delete("root/largefolder")
+diskSim.write_file_with_identifier("test1", "test1", "root/test", "file")
+diskSim.create_dir("test", "root", "dir")
+diskSim.write_file_with_identifier("test2", "test2", "root/test", "file")
+diskSim.create_dir("largefolder", "root", "dir")
+diskSim.create_dir("largefolder2", "root/largefolder", "dir")
+diskSim.write_file_with_identifier("test", 'A' * 3000, "root/largefolder/largefolder2", "file")
+diskSim.write_file_with_identifier("test", 'A' * 3000, "root/largefolder", "file")
+diskSim.create_dir("largefolder1", "root", "dir")
+diskSim.delete("root/largefolder")
+print(diskSim.read_file("root/test"))
+print(diskSim.read_file("root/test1"))
+print(diskSim.read_file("root/test/test2"))
+print(diskSim.read_file("root/largefolder1"))

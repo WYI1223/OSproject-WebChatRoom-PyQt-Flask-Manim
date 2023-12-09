@@ -19,6 +19,7 @@
     - [x] Write
     - [x] Dir
     - [x] read
+    - [x] delete
     - [ ] move
 - [ ] thread system Sim
 
