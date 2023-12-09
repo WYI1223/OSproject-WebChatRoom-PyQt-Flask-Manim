@@ -35,6 +35,7 @@ class Ui_MainWindow(object):
         self.textEdit = QtWidgets.QTextEdit(self.ChatTable)
         self.textEdit.setGeometry(QtCore.QRect(510, 910, 711, 61))
         self.textEdit.setObjectName("textEdit")
+
         self.listWidget = QtWidgets.QListWidget(self.ChatTable)
         self.listWidget.setGeometry(QtCore.QRect(510, 10, 961, 881))
         self.listWidget.setStyleSheet("QListWidget {\n"
@@ -46,6 +47,7 @@ class Ui_MainWindow(object):
         self.listWidget.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.listWidget.setFocusPolicy(QtCore.Qt.NoFocus)
         self.listWidget.setItemDelegate(BubbleDelegate())
+
         self.widget = QtWidgets.QWidget(self.ChatTable)
         self.widget.setGeometry(QtCore.QRect(10, 10, 491, 281))
         self.widget.setObjectName("widget")
@@ -55,24 +57,31 @@ class Ui_MainWindow(object):
         self.pushButton = QtWidgets.QPushButton(self.widget)
         self.pushButton.setObjectName("pushButton")
         self.verticalLayout.addWidget(self.pushButton)
+
         self.pushButton_2 = QtWidgets.QPushButton(self.widget)
         self.pushButton_2.setObjectName("pushButton_2")
         self.verticalLayout.addWidget(self.pushButton_2)
+
         self.pushButton_4 = QtWidgets.QPushButton(self.widget)
         self.pushButton_4.setObjectName("pushButton_4")
         self.verticalLayout.addWidget(self.pushButton_4)
+
         self.pushButton_3 = QtWidgets.QPushButton(self.widget)
         self.pushButton_3.setObjectName("pushButton_3")
         self.verticalLayout.addWidget(self.pushButton_3)
+
         self.pushButton_5 = QtWidgets.QPushButton(self.widget)
         self.pushButton_5.setObjectName("pushButton_5")
         self.verticalLayout.addWidget(self.pushButton_5)
+
         self.gridLayout.addWidget(self.ChatTable, 0, 2, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
+
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1497, 30))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
+
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)

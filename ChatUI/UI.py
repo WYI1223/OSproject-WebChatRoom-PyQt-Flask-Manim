@@ -1,6 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import generated_ui
 
+
 class MyMainWindow(QtWidgets.QMainWindow, generated_ui.Ui_MainWindow):
     def __init__(self):
         super(MyMainWindow, self).__init__()
@@ -19,7 +20,6 @@ class MyMainWindow(QtWidgets.QMainWindow, generated_ui.Ui_MainWindow):
         # Initialize current chat room and messages dictionary
         self.current_chat_room = "ChatRoom1"
         self.chat_room_messages = {"ChatRoom1": [], "ChatRoom2": [], "ChatRoom3": [], "ChatRoom4": [], "ChatRoom5": []}
-
         # Set up delegate for listWidget
         self.listWidget.setItemDelegate(generated_ui.BubbleDelegate())
 
