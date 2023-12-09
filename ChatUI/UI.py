@@ -20,6 +20,9 @@ class MyMainWindow(QtWidgets.QMainWindow, generated_ui.Ui_MainWindow):
         self.current_chat_room = "ChatRoom1"
         self.chat_room_messages = {"ChatRoom1": [], "ChatRoom2": [], "ChatRoom3": [], "ChatRoom4": [], "ChatRoom5": []}
 
+        # Set up delegate for listWidget
+        self.listWidget.setItemDelegate(generated_ui.BubbleDelegate())
+
     def switch_chat_room(self, new_chat_room):
         if new_chat_room != self.current_chat_room:
             # Save messages for the current chat room
@@ -30,6 +33,9 @@ class MyMainWindow(QtWidgets.QMainWindow, generated_ui.Ui_MainWindow):
 
             # Update listWidget with messages for the new chat room
             self.update_list_widget()
+
+            # Update label to display current chat room
+            self.label.setText(f"{new_chat_room}")
 
     def add_message(self, text, user_role):
         item = QtWidgets.QListWidgetItem(text)
