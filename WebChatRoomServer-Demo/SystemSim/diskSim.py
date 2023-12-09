@@ -16,23 +16,22 @@ class DiskSim:
     def __init__(self, location):
         self.location = location
         self.unique_id = 1
-        self.diskLoc = self.location + "\\Disk"
-        self.catalogLoc = self.location + "\\catalog"
-        self.tableLoc = self.location + "\\Table"
-        self.bootLoc = self.location + "\\Boot"
         if not os.path.exists(self.location):
             os.makedirs(self.location)
             self.initialize_system_enhanced()
             self.freeSpace = 1024
         else:
-            with open(self.location + "\\Boot", "r") as boot:
+            with open(self.location + "\\Boot.txt", "r") as boot:
                 self.freeSpace = int(boot.read())
-
+        self.diskLoc = self.location + "\\Disk.txt"
+        self.catalogLoc = self.location + "\\catalog.txt"
+        self.tableLoc = self.location + "\\Table.txt"
+        self.bootLoc = self.location + "\\Boot.txt"
 
     def initialize_system_enhanced(self):
         # 初始化 Table, Disk, catalog 文件
-        with open(self.tableLoc, "w+") as table, open(self.diskLoc, "w+") as disk, open(
-                self.catalogLoc, "w+") as catalog, open(self.bootLoc, "w+") as boot:
+        with open(self.tableLoc, "w") as table, open(self.diskLoc, "w") as disk, open(
+                self.catalogLoc, "w") as catalog, open(self.bootLoc, "w") as boot:
             # 初始化 Boot， 用于记录磁盘的状态
             boot.write("1024")
             self.freeSpace = 1024

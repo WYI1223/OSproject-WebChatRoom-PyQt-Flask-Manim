@@ -1,6 +1,12 @@
 # OSproject-WebChatRoom-PyQt-Flask-Manim
  OSproject-WebChatRoom-PyQt-Flask-Manim
 
+### 项目介绍
+该项目指在OS课程中，实现一个基于PyQt5的Web聊天室，同时实现一个基于Flask的Web聊天室，以及一个基于Manim的动画演示。
+通过该项目，可以学习到PyQt5、Flask、Manim的基本使用方法，以及操作系统的一些基本概念。
+代码能力复健用。
+
+
 ## Learning Line
 - [ ] PyQt5
 - https://www.bilibili.com/video/BV12B4y1h7QX/?spm_id_from=333.788.recommend_more_video.0&vd_source=2755821873fe338531f662ab376e426b
