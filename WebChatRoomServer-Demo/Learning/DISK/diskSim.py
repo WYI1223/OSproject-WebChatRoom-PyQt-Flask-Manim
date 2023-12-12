@@ -306,3 +306,30 @@ class diskSim:
                 self.freeSpace += 1
         with open(self.bootLoc, "w") as boot:
             boot.write(str(self.freeSpace))
+
+
+
+diskSim = diskSim("Test")
+diskSim.initialize_system_enhanced()
+diskSim.write_file_with_identifier("test", "test", "root/test", "file")
+diskSim.create_dir("test", "root", "dir")
+diskSim.write_file_with_identifier("test", "test", "root/test", "file")
+diskSim.create_dir("largefolder", "root", "dir")
+diskSim.create_dir("largefolder2", "root/largefolder", "dir")
+diskSim.write_file_with_identifier("test", 'A' * 3000, "root/largefolder/largefolder2", "file")
+diskSim.write_file_with_identifier("test", 'A' * 3000, "root/largefolder", "file")
+diskSim.create_dir("largefolder1", "root", "dir")
+diskSim.delete("root/largefolder")
+diskSim.write_file_with_identifier("test1", "test1", "root/test", "file")
+diskSim.create_dir("test", "root", "dir")
+diskSim.write_file_with_identifier("test2", "test2", "root/test", "file")
+diskSim.create_dir("largefolder", "root", "dir")
+diskSim.create_dir("largefolder2", "root/largefolder", "dir")
+diskSim.write_file_with_identifier("test", 'A' * 3000, "root/largefolder/largefolder2", "file")
+diskSim.write_file_with_identifier("test", 'A' * 3000, "root/largefolder", "file")
+diskSim.create_dir("largefolder1", "root", "dir")
+diskSim.delete("root/largefolder")
+print(diskSim.read_file("root/test"))
+print(diskSim.read_file("root/test1"))
+print(diskSim.read_file("root/test/test2"))
+print(diskSim.read_file("root/largefolder1"))

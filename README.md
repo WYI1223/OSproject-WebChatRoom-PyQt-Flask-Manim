@@ -44,7 +44,10 @@
     1. Operation System Concepts chap13 - 14: https://os-book.com/OS10/slide-dir/index.html
     2. An Overview of FAT12: https://oriont.net/posts/fat12-overview
     3. Design of the FAT file system, wikipedia: https://en.wikipedia.org/wiki/Design_of_the_FAT_file_system
-4. 
+4. Threading
+   1. 【100秒学会Python多线程threading-哔哩哔哩】 https://b23.tv/HmynWaA
+   2. 【用Python实现创建多线程，使程序执行速度更快，超细致讲解，快收藏！（上篇）-哔哩哔哩】 https://b23.tv/m5UG1Hx
+   3. 【python 多任务 进程 线程 进程池 互斥锁 队列-哔哩哔哩】 https://b23.tv/0ewf2bt
 
 #### 在项目中得到的一些启发
 1. FAT

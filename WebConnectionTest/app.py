@@ -10,7 +10,7 @@ online_users = set()  # 创建一个集合用于存储在线用户的标识
 
 @app.route('/')  # 定义路由：当用户访问网站根目录时
 def index():
-    return render_template('chat.html')  # 返回 chat.html 模板的内容
+    return render_template('index.html')  # 返回 chat.html 模板的内容
 
 @socketio.on('connect')  # 定义当有新的 WebSocket 连接时的处理逻辑
 def handle_connect():
