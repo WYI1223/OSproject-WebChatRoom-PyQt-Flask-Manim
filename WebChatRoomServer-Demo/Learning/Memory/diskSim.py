@@ -3,8 +3,8 @@ import ast
 
 # DiskSim = DiskSim(硬盘名称)
 # DiskSim.initialize_system_enhanced() # 初始化磁盘
-# DiskSim.write_file_with_identifier(文件名, 文件内容, 父目录, 文件类型) # 写入文件
-# DiskSim.create_dir(文件名, 父目录, 文件类型) # 创建目录
+# DiskSim.write_file(文件名, 文件内容, 父目录, 文件类型) # 写入文件
+# DiskSim._mkdir(文件名, 父目录, 文件类型) # 创建目录
 # DiskSim.read_file(文件路径) # 读取文件
 # DiskSim.delete(文件路径) # 删除文件
 # DiskSim.free_space() # 返回磁盘剩余空间
@@ -114,9 +114,12 @@ class diskSim:
         else:
             print(f"Index {index} is out of range for the file.")
 
-    def create_dir(self, name, parent="root", file_type="dir"):
+    def _mkdir(self, name, parent="root", file_type="dir"):
         # 生成一个独特的标识符
 
+        if self.get_line_of_parent(parent+"/"+name) is not False:
+            print("!!!dir already exists")
+            return False
 
         with open(self.catalogLoc, "r") as catalog:
             catalog.seek(0)
@@ -146,7 +149,7 @@ class diskSim:
             # catalog.writelines(lines)
         return True
 
-    def write_file_with_identifier(self, name, data, parent="root", file_type="file"):
+    def write_file(self, name, data, parent="root", file_type="file"):
         # 生成一个独特的标识符
 
         with open(self.tableLoc, "r") as table:
@@ -308,26 +311,25 @@ class diskSim:
             boot.write(str(self.freeSpace))
 
 
-
 diskSim = diskSim("Test")
 diskSim.initialize_system_enhanced()
-diskSim.write_file_with_identifier("test", "test", "root/test", "file")
-diskSim.create_dir("test", "root", "dir")
-diskSim.write_file_with_identifier("test", "test", "root/test", "file")
-diskSim.create_dir("largefolder", "root", "dir")
-diskSim.create_dir("largefolder2", "root/largefolder", "dir")
-diskSim.write_file_with_identifier("test", 'A' * 3000, "root/largefolder/largefolder2", "file")
-diskSim.write_file_with_identifier("test", 'A' * 3000, "root/largefolder", "file")
-diskSim.create_dir("largefolder1", "root", "dir")
+diskSim.write_file("test", "test", "root/test", "file")
+diskSim._mkdir("test", "root", "dir")
+diskSim.write_file("test", "test", "root/test", "file")
+diskSim._mkdir("largefolder", "root", "dir")
+diskSim._mkdir("largefolder2", "root/largefolder", "dir")
+diskSim.write_file("test", 'A' * 3000, "root/largefolder/largefolder2", "file")
+diskSim.write_file("test", 'A' * 3000, "root/largefolder", "file")
+diskSim._mkdir("largefolder1", "root", "dir")
 diskSim.delete("root/largefolder")
-diskSim.write_file_with_identifier("test1", "test1", "root/test", "file")
-diskSim.create_dir("test", "root", "dir")
-diskSim.write_file_with_identifier("test2", "test2", "root/test", "file")
-diskSim.create_dir("largefolder", "root", "dir")
-diskSim.create_dir("largefolder2", "root/largefolder", "dir")
-diskSim.write_file_with_identifier("test", 'A' * 3000, "root/largefolder/largefolder2", "file")
-diskSim.write_file_with_identifier("test", 'A' * 3000, "root/largefolder", "file")
-diskSim.create_dir("largefolder1", "root", "dir")
+diskSim.write_file("test1", "test1", "root/test", "file")
+diskSim._mkdir("test", "root", "dir")
+diskSim.write_file("test2", "test2", "root/test", "file")
+diskSim._mkdir("largefolder", "root", "dir")
+diskSim._mkdir("largefolder2", "root/largefolder", "dir")
+diskSim.write_file("test", 'A' * 3000, "root/largefolder/largefolder2", "file")
+diskSim.write_file("test", 'A' * 3000, "root/largefolder", "file")
+diskSim._mkdir("largefolder1", "root", "dir")
 diskSim.delete("root/largefolder")
 print(diskSim.read_file("root/test"))
 print(diskSim.read_file("root/test1"))
