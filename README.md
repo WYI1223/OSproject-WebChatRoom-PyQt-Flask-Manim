@@ -49,6 +49,14 @@
    2. 【用Python实现创建多线程，使程序执行速度更快，超细致讲解，快收藏！（上篇）-哔哩哔哩】 https://b23.tv/m5UG1Hx
    3. 【python 多任务 进程 线程 进程池 互斥锁 队列-哔哩哔哩】 https://b23.tv/0ewf2bt
 
+##### 可以用来巩固知识的内容
+
+1. 【分段、分页和虚拟内存 操作系统OS 国外优质讲解，清晰易懂！！！1】 https://www.bilibili.com/video/BV1ws4y1k7xp/?share_source=copy_web&vd_source=da0575add73694307a909c8c9c1845e9
+2. 【操作系统原理(合集)】 https://www.bilibili.com/video/BV13b4y1Q7YD/?p=4&share_source=copy_web&vd_source=da0575add73694307a909c8c9c1845e9
+3. 【爆肝一晚上，希望用动画带你理解操作系统的启动】 https://www.bilibili.com/video/BV1mm4y1u7G6/?share_source=copy_web&vd_source=da0575add73694307a909c8c9c1845e9
+
+
+
 #### 在项目中得到的一些启发
 1. FAT
    1. 读取文件时

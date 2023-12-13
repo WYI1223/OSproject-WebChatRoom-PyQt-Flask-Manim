@@ -2,52 +2,61 @@ class memorySim:
 
     def __init__(self, length):
 
-        self.table = {}
-        self.blockstatus = [False] * length
-        self.block = {i: None for i in range(length)}
-        self.size = 0
-    def add(self, mid, data):
-        length = len(self.blockstatus)
-        if mid in self.table:
-            self.delete(mid)
+        self.table = [False] * length
+        self.cata = {}
+        self.counter = {}
+        self.memSpace = length
 
-        if self.size+1 > length:
+    def add(self, mid, data):
+
+        # 先判断是否有空间
+        if self.memSpace == 0:
             return False
-        for i in range(length):
-            if not self.blockstatus[i]:
-                self.blockstatus[i] = True
-                self.block[i] = data
-                self.table[mid] = i
-                self.size += 1
+
+        # 如果有空间，判断是否已经存在
+        if mid in self.table:
+            return False
+
+        # 如果不存在，加入到内存中
+        for i in range(self.memSpace):
+            if not self.table[i]:
+                self.table[i] = True
+                self.cata[mid] = i
+                self.counter[mid] = data
+                self.memSpace -= 1
                 return True
 
     def get(self, mid):
-        if mid not in self.table:
-            return None
-        index = self.table[mid]
-        return self.block[index]
+
+        if mid not in self.cata:
+            return False
+        else:
+            return self.counter[mid]
 
     def delete(self, mid):
-        if mid not in self.table:
-            raise KeyError("No such memory mid:", mid)
-        index = self.table[mid]
-        self.blockstatus[index] = False
-        self.block[index] = None
-        self.table.pop(mid)
-        self.size -= 1
-        return True
+
+        if mid not in self.cata:
+            return False
+        else:
+            self.table[self.cata[mid]] = False
+            self.counter.pop(mid)
+            self.cata.pop(mid)
+            self.memSpace += 1
+            return True
+
+    def change(self, mid, data):
+        if mid not in self.cata:
+            return False
+        else:
+            self.counter[mid] = data
+            return True
 
     def clear(self):
-        self.table = {}
-        self.blockstatus = [False] * len(self.blockstatus)
-        self.block = {i: None for i in self.block}
-        self.size = 0
-        return True
+        self.table = [False] * len(self.table)
+        self.cata = {}
+        self.counter = {}
+        self.memSpace = len(self.table)
 
     def __str__(self):
-        return str(self.table), str(self.blockstatus), str(self.block), str(self.size)
-
-    def getMemory(self):
-        return ((v,k) for k,v in self.table.items())
-
+        pass
 

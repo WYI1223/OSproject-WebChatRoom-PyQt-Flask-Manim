@@ -1,64 +1,48 @@
 import os
-
+import diskSim
 
 class virtualMemorySim:
 
-    def __init__(self, serverName: str):
-        # location是磁盘的位置
-        self.location = serverName
-        os.makedirs(self.location, exist_ok=True)
+    def __init__(self, serverName: str, disk: diskSim):
 
-        self.tablelocation = "{}/table.txt".format(self.location)
-        # table是一个字典，用于存储mid和location的对应关系
-        if os.path.exists(self.tablelocation):
-            with open(self.tablelocation, "r+") as f:
-                self.table = eval(f.read())
-        else:
-            self.table = {0: self.location}
-
-    def updataTable(self):
-        # 将table写入磁盘
-        with open(self.tablelocation, "w+") as f:
-            f.write(str(self.table))
+        # disk是一个diskSim对象，虚拟内存的数据将存储在diskSim对象中
+        # DiskSim = DiskSim(硬盘名称)
+        # DiskSim.initialize_system_enhanced() # 初始化磁盘
+        # DiskSim.write_file(文件名, 文件内容, 父目录, 文件类型) # 写入文件
+        # DiskSim._mkdir(文件名, 父目录, 文件类型) # 创建目录
+        # DiskSim.read_file(文件路径) # 读取文件
+        # DiskSim.delete(文件路径) # 删除文件
+        # DiskSim.free_space() # 返回磁盘剩余空间
+        self.disk = disk
+        self.serverName = serverName
+        disk._mkdir("VirtualMemory", "root/"+serverName)
+        self.table = {} # 虚拟内存的索引表 {"mid": "location"}
+        self.location = "root/"+serverName+"/VirtualMemory"
 
     def read(self, mid):
+
         if mid not in self.table:
             return None
-
-        templocation = self.table.get(mid)
-        with open(templocation, "r") as f:
-            data = f.read()
-        return data
+        file_location = self.table[mid]
+        return self.disk.read_file(file_location)
 
     def write(self, mid, data):
 
-        # 将数据mid以及数据data写入磁盘
-        self.table[mid] = self.location + "/{}.txt".format(mid)
-        with open(self.table[mid], "w+") as f:
-            f.write(data)
-        self.updataTable()
-        return True
+        if mid in self.table:
+            return False
+        self.table[mid] = self.location + "/" + mid
+        self.disk.write_file(mid, data, self.location, file_type="file")
+
 
     def delete(self, mid):
         if mid not in self.table:
             return False
+        self.disk.delete(self.table[mid])
         self.table.pop(mid)
-        self.updataTable()
         return True
 
     def clear(self):
-        self.table = {}
-        self.updataTable()
-        return True
-
+        self.table = {} # 虚拟内存的索引表 {"mid": "location"}
     def getTable(self):
         return self.table
 
-
-if __name__ == "__main__":
-    diskSim = virtualMemorySim("Test")
-    diskSim.clear()
-    print(diskSim.getTable())
-    print(diskSim.read(1))
-    print(diskSim.write(1, "hello"))
-    print(diskSim.read(1))
