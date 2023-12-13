@@ -20,7 +20,7 @@ login_manager.init_app(app)
 def home():
     # 主页路由，显示用户加入的聊天室
     rooms = []
-    if current_user.is_authenticated():
+    if current_user.is_authenticated:
         rooms = get_rooms_for_user(current_user.username)
     return render_template("index.html", rooms=rooms)
 
