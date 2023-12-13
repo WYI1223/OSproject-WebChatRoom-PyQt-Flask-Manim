@@ -229,6 +229,9 @@ class diskSim:
             return False
         with open(self.catalogLoc, "r") as catalog:
             lines = catalog.readlines()
+
+            # print("!!!!!target",type(target),target)
+
             AimCatalog = eval(lines[target])
         if AimCatalog[2] == "dir":
             # 返回目录下的文件名

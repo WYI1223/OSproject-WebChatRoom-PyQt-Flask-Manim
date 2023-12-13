@@ -61,3 +61,4 @@ class memorySim:
     def __str__(self):
         return "Table(Memory):",str(self.table), "cata:", str(self.cata), "counter",str(self.counter), "memSpace",str(self.memSpace)
 
+

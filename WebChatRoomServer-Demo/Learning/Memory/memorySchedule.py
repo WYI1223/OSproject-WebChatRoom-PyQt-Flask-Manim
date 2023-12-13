@@ -33,14 +33,16 @@ class memoryScheduler:
             print("Error: memoryScheduler._create: mid already exists", mid)
             return False
         if self.memory.add(mid, data):
-            self.table[mid] = time.time()
+            self.table[mid] = self.counter
+            self.counter += 1
             return True
         else:
             # 内存已满，将最早访问的数据转移到虚拟内存中
             self._Mem2Vmem(self.find_last_access_early())
             # 将数据写入内存
             if self.memory.add(mid, data):
-                self.table[mid] = time.time()
+                self.table[mid] = self.counter
+                self.counter += 1
                 return True
 
     def _read(self, mid):
@@ -56,11 +58,12 @@ class memoryScheduler:
                 # 返回数据
                 return self.memory.get(mid)
         else:
-            self.table[mid] = time.time()
+            self.table[mid] = self.counter
+            self.counter += 1
             return self.memory.get(mid)
 
     def find_last_access_early(self):
-        last_access_time = time.time()
+        last_access_time = self.counter
         last_access_mid = None
         for mid in self.table:
             if self.table[mid] < last_access_time:
@@ -81,10 +84,11 @@ class memoryScheduler:
         print("Vmem2Mem", mid)
         # 将虚拟内存中的数据转移到内存中
         data = self.vmemory.read(mid)
-        self.memory.write(mid, data)
+        self.memory.add(mid, data)
         self.vmemory.delete(mid)
         self.vmemoryTable.remove(mid)
-        self.table[mid] = time.time()
+        self.table[mid] = self.counter
+        self.counter += 1
 
 
     def _update(self, mid, data):
@@ -101,7 +105,8 @@ class memoryScheduler:
                 # 返回数据
                 return True
         else:
-            self.table[mid] = time.time()
+            self.table[mid] = self.counter
+            self.counter += 1
             self.memory.change(mid, data)
             return True
 
@@ -126,22 +131,41 @@ if __name__ == "__main__":
     def getstate(memoryscheduler):
         while(True):
             print(memoryscheduler._getstate())
-            time.sleep(0.5)
+            # time.sleep(0.5)
 
     def writeCycle(memoryscheduler):
         i = 0
         while(True):
             i += 1
-            memoryscheduler._write(i,i)
+            memoryscheduler._write(str(i),str(i))
             print("write", i)
-            time.sleep(0.5)
+            # time.sleep(0.5)
+    def readCycle(memoryscheduler):
+        j = 0
+        while(True):
+            j += 1
+            print("read", str(j), memoryscheduler._read(str(j)))
+            # time.sleep(0.5)
 
-    def test():
-        diskSim = diskSim.diskSim("server1")
-        diskSim.initialize_system_enhanced()
-        diskSim._mkdir("server1", "root")
-        memoryScheduler = memoryScheduler("server1", 10, diskSim)
-        t1 = threading.Thread(target=getstate, args=(memoryScheduler,))
-        t2 = threading.Thread(target=writeCycle, args=(memoryScheduler,))
-        t1.start()
-        t2.start()
+    def deleteCycle(memoryscheduler):
+        k = 0
+        while(True):
+            k += 1
+            memoryscheduler._release(str(k))
+            print("delete", str(k))
+            # time.sleep(0.5)
+
+    diskSim = diskSim.diskSim("server1")
+    diskSim.initialize_system_enhanced()
+    diskSim._mkdir("server1", "root")
+    memoryScheduler = memoryScheduler("server1", 10, diskSim)
+    t1 = threading.Thread(target=getstate, args=(memoryScheduler,))
+    t2 = threading.Thread(target=writeCycle, args=(memoryScheduler,))
+    t3 = threading.Thread(target=readCycle, args=(memoryScheduler,))
+    t4 = threading.Thread(target=deleteCycle, args=(memoryScheduler,))
+    t1.start()
+    t2.start()
+    time.sleep(1)
+    t3.start()
+    time.sleep(1)
+    t4.start()
