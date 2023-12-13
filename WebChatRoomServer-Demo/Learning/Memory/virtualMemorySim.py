@@ -30,7 +30,7 @@ class virtualMemorySim:
 
         if mid in self.table:
             return False
-        self.table[mid] = self.location + "/" + mid
+        self.table[mid] = self.location + "/" + str(mid)
         self.disk.write_file(mid, data, self.location, file_type="file")
 
 

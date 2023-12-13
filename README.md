@@ -15,13 +15,20 @@
 - https://chat.openai.com/share/0819f6a2-3601-4a1a-831f-2028db982e8d
 - [ ] Manim
 - https://chat.openai.com/share/afb47da5-b8f5-4f92-b136-71307050a7d9
+
+
+
+### 完成情况
 - [ ] Memory Sim
+  - [ ] MemoryScheduler 13.12.2023
+  - [ ] MemorySim 10.12.2023
+  - [ ] VmemSim   10.12.2023
 - [ ] File System Sim - FAT
-  - [x] Feature
-    - [x] Limited Space
+  - [x] Feature - 10.12.2023
+    - [x] Limited Space 
     - [x] Less search operation
     - [x] Offline availble
-  - [ ] Function
+  - [ ] Function - 11.12.2023
     - [x] Write
     - [x] Dir
     - [x] read

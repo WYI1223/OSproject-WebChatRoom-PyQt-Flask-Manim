@@ -1,21 +1,36 @@
+import threading
 import time
 import memorySim
 import virtualMemorySim
 import diskSim
+
+
+# 内存调度器
+# LRU调度算法
+# _write(mid, data) 写入数据
+# _read(mid) 读取数据
+# _update(mid, data) 更新数据
+# _release(mid) 释放数据
+# _getstate() 返回内存状态
+
 
 class memoryScheduler:
 
     def __init__(self, serverName, length, disk:diskSim):
         # 初始化内存，以及虚拟内存
         self.memory = memorySim.memorySim(length)
+        self.disk = disk.delete("root/"+serverName+"/VirtualMemory")
         self.vmemory = virtualMemorySim.virtualMemorySim(serverName,disk)
         # table储存每个内存上次被访问的时间
+        # counter用来计数
+        self.counter = 0
         self.table = {}
         # 用于记录处于虚拟内存中的数据
         self.vmemoryTable = []
+
     def _write(self, mid, data):
         if mid in self.table:
-            print("Error: memoryScheduler._create: mid already exists")
+            print("Error: memoryScheduler._create: mid already exists", mid)
             return False
         if self.memory.add(mid, data):
             self.table[mid] = time.time()
@@ -31,7 +46,7 @@ class memoryScheduler:
     def _read(self, mid):
         if mid not in self.table:
             if mid not in self.vmemoryTable:
-                print("Error: memoryScheduler._read: mid not exists")
+                print("Error: memoryScheduler._read: mid not exists", mid)
                 return None
             else:
                 # 将最早访问的数据转移到虚拟内存中
@@ -54,6 +69,7 @@ class memoryScheduler:
         return last_access_mid
 
     def _Mem2Vmem(self, mid):
+        print("Mem2Vmem", mid)
         # 将内存中的数据转移到虚拟内存中
         data = self.memory.get(mid)
         self.vmemory.write(mid, data)
@@ -62,6 +78,7 @@ class memoryScheduler:
         self.vmemoryTable.append(mid)
 
     def _Vmem2Mem(self, mid):
+        print("Vmem2Mem", mid)
         # 将虚拟内存中的数据转移到内存中
         data = self.vmemory.read(mid)
         self.memory.write(mid, data)
@@ -73,7 +90,7 @@ class memoryScheduler:
     def _update(self, mid, data):
         if mid not in self.table:
             if mid not in self.vmemoryTable:
-                print("Error: memoryScheduler._update: mid not exists")
+                print("Error: memoryScheduler._update: mid not exists", mid)
                 return False
             else:
                 # 将最早访问的数据转移到虚拟内存中
@@ -101,12 +118,30 @@ class memoryScheduler:
 
 
     def _getstate(self):
-        return str(self.memory), self.vmemory.getTable(), self.table, self.vmemoryTable
-
-
-
-
+        return "Memory:", self.memory.__str__(), "Vmemory", self.vmemory.getTable(), \
+               "MemoryScheduler:", self.table, self.vmemoryTable
 
 
 if __name__ == "__main__":
-    pass
+    def getstate(memoryscheduler):
+        while(True):
+            print(memoryscheduler._getstate())
+            time.sleep(0.5)
+
+    def writeCycle(memoryscheduler):
+        i = 0
+        while(True):
+            i += 1
+            memoryscheduler._write(i,i)
+            print("write", i)
+            time.sleep(0.5)
+
+    def test():
+        diskSim = diskSim.diskSim("server1")
+        diskSim.initialize_system_enhanced()
+        diskSim._mkdir("server1", "root")
+        memoryScheduler = memoryScheduler("server1", 10, diskSim)
+        t1 = threading.Thread(target=getstate, args=(memoryScheduler,))
+        t2 = threading.Thread(target=writeCycle, args=(memoryScheduler,))
+        t1.start()
+        t2.start()
