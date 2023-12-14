@@ -259,7 +259,6 @@ class diskSim:
                     return data
 
 
-
     def delete(self, path):
         target_line = self.get_line_of_parent(path)
         if target_line is False:

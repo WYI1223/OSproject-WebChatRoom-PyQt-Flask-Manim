@@ -6,6 +6,7 @@
 通过该项目，可以学习到PyQt5、Flask、Manim的基本使用方法，以及操作系统的一些基本概念。
 代码能力复健用。
 
+<<<<<<< Updated upstream
 在中文互联网上流传着这么一句话“不要重复造轮子”，但是今天我们的理念是try to make a wheel。
 尽管我们的wheel目前还无法独立工作，但是在这个项目完成之后，对于造一个真正的轮子也有了不少见解。
 
@@ -14,6 +15,16 @@
 
 首先，我将按照实现顺序来介绍我们的项目。
 我们在这节课上
+
+### 项目结构
+![img.png](img.png)
+![img_1.png](img_1.png)
+
+FAT结构
+
+![img_3.png](img_3.png)
+
+
 
 
 ## Learning Line
@@ -28,18 +39,20 @@
 
 
 ### 完成情况
-- [ ] Memory Sim
-  - [X] MemoryScheduler 13.12.2023
-  - [X] MemorySim 10.12.2023
-  - [X] VmemSim   10.12.2023
-- [ ] File System Sim - FAT
+
+- [x] Memory Sim
+  - [x] MemoryScheduler 13.12.2023
+  - [x] MemorySim 10.12.2023 - 13.12.2023
+  - [x] VmemSim   10.12.2023 - 13.12.2023
+- [x] File System Sim - FAT
   - [x] Feature - 10.12.2023
     - [x] Limited Space 
     - [x] Less search operation
     - [x] Offline availble
   - [ ] Function - 11.12.2023
     - [x] Write
-    - [x] Dir
+    - [x] mkdir
+    - [x] ls
     - [x] read
     - [x] delete
     - [ ] move
