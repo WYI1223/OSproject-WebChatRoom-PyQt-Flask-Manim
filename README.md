@@ -6,6 +6,15 @@
 通过该项目，可以学习到PyQt5、Flask、Manim的基本使用方法，以及操作系统的一些基本概念。
 代码能力复健用。
 
+在中文互联网上流传着这么一句话“不要重复造轮子”，但是今天我们的理念是try to make a wheel。
+尽管我们的wheel目前还无法独立工作，但是在这个项目完成之后，对于造一个真正的轮子也有了不少见解。
+
+整个项目是自上而下自下而上step-wise同时进行的。首先我们进行了顶层设计，也就是实现一个可以运行的chatRoom，
+我们简单分为了三个部分，UI，Server，以及wheel。他们相辅相成。
+
+首先，我将按照实现顺序来介绍我们的项目。
+我们在这节课上
+
 
 ## Learning Line
 - [ ] PyQt5
@@ -20,9 +29,9 @@
 
 ### 完成情况
 - [ ] Memory Sim
-  - [ ] MemoryScheduler 13.12.2023
-  - [ ] MemorySim 10.12.2023
-  - [ ] VmemSim   10.12.2023
+  - [X] MemoryScheduler 13.12.2023
+  - [X] MemorySim 10.12.2023
+  - [X] VmemSim   10.12.2023
 - [ ] File System Sim - FAT
   - [x] Feature - 10.12.2023
     - [x] Limited Space 
@@ -61,6 +70,7 @@
 1. 【分段、分页和虚拟内存 操作系统OS 国外优质讲解，清晰易懂！！！1】 https://www.bilibili.com/video/BV1ws4y1k7xp/?share_source=copy_web&vd_source=da0575add73694307a909c8c9c1845e9
 2. 【操作系统原理(合集)】 https://www.bilibili.com/video/BV13b4y1Q7YD/?p=4&share_source=copy_web&vd_source=da0575add73694307a909c8c9c1845e9
 3. 【爆肝一晚上，希望用动画带你理解操作系统的启动】 https://www.bilibili.com/video/BV1mm4y1u7G6/?share_source=copy_web&vd_source=da0575add73694307a909c8c9c1845e9
+4. 【一个视频告诉你“并发、并行、异步、同步”的区别】 https://www.bilibili.com/video/BV17V411e7Ua/?share_source=copy_web&vd_source=3bb91ad92758e79e1abca697cd2e24bb
 
 
 
