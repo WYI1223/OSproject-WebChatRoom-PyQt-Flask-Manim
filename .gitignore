@@ -151,3 +151,4 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 .idea/OSproject-WebChatRoom-PyQt-Flask-Manim.iml
+.idea/OSproject-WebChatRoom-PyQt-Flask-Manim.iml

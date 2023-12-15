@@ -7,7 +7,8 @@ from flask_socketio import SocketIO, join_room, leave_room
 from pymongo.errors import DuplicateKeyError
 
 from db import get_user, save_user, save_room, add_room_members, get_rooms_for_user, get_room, is_room_member, \
-    get_room_members, is_room_admin, update_room, remove_room_members, save_message, get_messages
+    get_room_members, is_room_admin, update_room, remove_room_members, save_message, get_messages, rooms_collection, \
+    add_room_member
 
 app = Flask(__name__)
 app.secret_key = "sfdjkafnk"
@@ -155,6 +156,8 @@ def handle_join_room_event(data):
     app.logger.info("{} has joined the room {}".format(data['username'], data['room']))
     join_room(data['room'])
     socketio.emit('join_room_announcement', data, room=data['room'])
+
+
 
 @socketio.on('leave_room')
 def handle_leave_room_event(data):
