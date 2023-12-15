@@ -1,148 +1,129 @@
 from datetime import datetime
-
 from bson.json_util import dumps
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, request
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_socketio import SocketIO, join_room, leave_room
 from pymongo.errors import DuplicateKeyError
-
 from db import get_user, save_user, save_room, add_room_members, get_rooms_for_user, get_room, is_room_member, \
-    get_room_members, is_room_admin, update_room, remove_room_members, save_message, get_messages, rooms_collection, \
-    add_room_member
+    get_room_members, is_room_admin, update_room, remove_room_members, save_message, get_messages
 
 app = Flask(__name__)
 app.secret_key = "sfdjkafnk"
 socketio = SocketIO(app)
 login_manager = LoginManager()
-login_manager.login_view = 'login'
 login_manager.init_app(app)
 
-@app.route('/')
-def home():
-    # 主页路由，显示用户加入的聊天室
-    rooms = []
+
+@login_manager.user_loader
+def load_user(username):
+    return get_user(username)
+
+
+@socketio.on('connect')
+def handle_connect():
     if current_user.is_authenticated:
         rooms = get_rooms_for_user(current_user.username)
-    return render_template("index.html", rooms=rooms)
+        socketio.emit('update_rooms', {'rooms': rooms})
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    # 登录路由，处理用户登录请求
-    if current_user.is_authenticated:
-        return redirect(url_for('home'))
 
-    message = ''
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password_input = request.form.get('password')
-        user = get_user(username)
+@socketio.on('login')
+def handle_login(data):
+    username = data['username']
+    password_input = data['password']
+    user = get_user(username)
 
-        if user and user.check_password(password_input):
-            login_user(user)
-            return redirect(url_for('home'))
-        else:
-            message = 'Failed to login!'
-    return render_template('login.html', message=message)
+    if user and user.check_password(password_input):
+        login_user(user)
+        rooms = get_rooms_for_user(username)
+        socketio.emit('login_response', {'success': True, 'rooms': rooms})
+    else:
+        socketio.emit('login_response', {'success': False, 'message': 'Failed to login'})
 
-@app.route('/signup', methods=['GET', 'POST'])
-def signup():
-    # 注册路由，处理用户注册请求
-    if current_user.is_authenticated:
-        return redirect(url_for('home'))
 
-    message = ''
-    if request.method == 'POST':
-        username = request.form.get('username')
-        email = request.form.get('email')
-        password = request.form.get('password')
-        try:
-            save_user(username, email, password)
-            return redirect(url_for('login'))
-        except DuplicateKeyError:
-            message = "User already exists!"
-    return render_template('signup.html', message=message)
+@socketio.on('signup')
+def handle_signup(data):
+    username = data['username']
+    email = data['email']
+    password = data['password']
 
-@app.route("/logout/")
+    try:
+        save_user(username, email, password)
+        socketio.emit('signup_response', {'success': True})
+    except DuplicateKeyError:
+        socketio.emit('signup_response', {'success': False, 'message': 'User already exists!'})
+
+
+@socketio.on('create_room')
 @login_required
-def logout():
-    # 登出路由，处理用户登出请求
-    logout_user()
-    return redirect(url_for('home'))
+def handle_create_room(data):
+    room_name = data['room_name']
+    usernames = [username.strip() for username in data['members'].split(',')]
 
-@app.route('/create-room/', methods=['GET', 'POST'])
+    if len(room_name) and len(usernames):
+        room_id = save_room(room_name, current_user.username)
+        if current_user.username in usernames:
+            usernames.remove(current_user.username)
+        add_room_members(room_id, room_name, usernames, current_user.username)
+        socketio.emit('create_room_response', {'success': True, 'room_id': room_id})
+    else:
+        socketio.emit('create_room_response', {'success': False, 'message': 'Failed to create room'})
+
+
+@socketio.on('edit_room')
 @login_required
-def create_room():
-    # 创建聊天室路由，处理创建聊天室请求
-    message = ''
-    if request.method == 'POST':
-        room_name = request.form.get('room_name')
-        usernames = [username.strip() for username in request.form.get('members').split(',')]
-
-        if len(room_name) and len(usernames):
-            room_id = save_room(room_name, current_user.username)
-            if current_user.username in usernames:
-                usernames.remove(current_user.username)
-            add_room_members(room_id, room_name, usernames, current_user.username)
-            return redirect(url_for('view_room', room_id=room_id))
-        else:
-            message = "Failed to create room"
-    return render_template('create_room.html', message=message)
-
-@app.route('/rooms/<room_id>/edit', methods=['GET', 'POST'])
-@login_required
-def edit_room(room_id):
-    # 编辑聊天室路由，处理编辑聊天室请求
+def handle_edit_room(data):
+    room_id = data['room_id']
     room = get_room(room_id)
     if room and is_room_admin(room_id, current_user.username):
-        existing_room_members = [member['_id']['username'] for member in get_room_members(room_id)]
-        room_members_str = ",".join(existing_room_members)
-        message = ''
-        if request.method == 'POST':
-            room_name = request.form.get('room_name')
-            room['name'] = room_name
-            update_room(room_id, room_name)
+        existing_room_members = [member.username for member in get_room_members(room_id)]
+        room_members = [username.strip() for username in data['members'].split(',')]
 
-            new_members = [username.strip() for username in request.form.get('members').split(',')]
-            members_to_add = list(set(new_members) - set(existing_room_members))
-            members_to_remove = list(set(existing_room_members) - set(new_members))
-            if len(members_to_add):
-                add_room_members(room_id, room_name, members_to_add, current_user.username)
-            if len(members_to_remove):
-                remove_room_members(room_id, members_to_remove)
-            message = 'Room edited successfully'
-            room_members_str = ",".join(new_members)
-        return render_template('edit_room.html', room=room, room_members_str=room_members_str, message=message)
+        room_name = data['room_name']
+        room['name'] = room_name
+        update_room(room_id, room_name)
+
+        members_to_add = list(set(room_members) - set(existing_room_members))
+        members_to_remove = list(set(existing_room_members) - set(room_members))
+        if len(members_to_add):
+            add_room_members(room_id, room_name, members_to_add, current_user.username)
+        if len(members_to_remove):
+            remove_room_members(room_id, members_to_remove)
+
+        socketio.emit('edit_room_response', {'success': True, 'room_members': room_members})
     else:
-        return "Room not found", 404
+        socketio.emit('edit_room_response', {'success': False, 'message': 'Room not found or permission denied'})
 
-@app.route('/rooms/<room_id>/')
+
+@socketio.on('view_room')
 @login_required
-def view_room(room_id):
-    # 查看聊天室路由，显示聊天室信息和成员
+def handle_view_room(data):
+    room_id = data['room_id']
     room = get_room(room_id)
     if room and is_room_member(room_id, current_user.username):
-        room_members = get_room_members(room_id)
+        room_members = [member.username for member in get_room_members(room_id)]
         messages = get_messages(room_id)
-        return render_template('view_room.html', username=current_user.username, room=room, room_members=room_members,
-                               messages=messages)
+        socketio.emit('view_room_response', {'success': True, 'username': current_user.username,
+                                             'room': room, 'room_members': room_members, 'messages': messages})
     else:
-        return "Room not found", 404
+        socketio.emit('view_room_response', {'success': False, 'message': 'Room not found or permission denied'})
 
-@app.route('/rooms/<room_id>/messages/')
+
+@socketio.on('get_older_messages')
 @login_required
-def get_older_messages(room_id):
-    # 获取历史消息路由
+def handle_get_older_messages(data):
+    room_id = data['room_id']
     room = get_room(room_id)
     if room and is_room_member(room_id, current_user.username):
-        page = int(request.args.get('page', 0))
+        page = int(data.get('page', 0))
         messages = get_messages(room_id, page)
-        return dumps(messages)
+        socketio.emit('get_older_messages_response', {'messages': messages})
     else:
-        return "Room not found", 404
+        socketio.emit('get_older_messages_response', {'message': 'Room not found or permission denied'})
+
 
 @socketio.on('send_message')
+@login_required
 def handle_send_message_event(data):
-    # 处理发送消息事件
     app.logger.info("{} has sent message to the room {}: {}".format(data['username'],
                                                                     data['room'],
                                                                     data['message']))
@@ -150,26 +131,22 @@ def handle_send_message_event(data):
     save_message(data['room'], data['message'], data['username'])
     socketio.emit('receive_message', data, room=data['room'])
 
+
 @socketio.on('join_room')
+@login_required
 def handle_join_room_event(data):
-    # 处理加入聊天室事件
     app.logger.info("{} has joined the room {}".format(data['username'], data['room']))
     join_room(data['room'])
     socketio.emit('join_room_announcement', data, room=data['room'])
 
 
-
 @socketio.on('leave_room')
+@login_required
 def handle_leave_room_event(data):
-    # 处理离开聊天室事件
     app.logger.info("{} has left the room {}".format(data['username'], data['room']))
     leave_room(data['room'])
     socketio.emit('leave_room_announcement', data, room=data['room'])
 
-@login_manager.user_loader
-def load_user(username):
-    # 用户加载函数
-    return get_user(username)
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True, allow_unsafe_werkzeug=True)
+    socketio.run(app, debug=True)
