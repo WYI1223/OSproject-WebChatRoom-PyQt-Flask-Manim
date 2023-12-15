@@ -8,7 +8,7 @@ import ast
 # DiskSim.read_file(文件路径) # 读取文件
 # DiskSim.delete(文件路径) # 删除文件
 # DiskSim.free_space() # 返回磁盘剩余空间
-
+# DiskSim._ls(目录路径) # 返回目录下的文件名
 
 class diskSim:
 
@@ -156,10 +156,11 @@ class diskSim:
             blocks = table.readlines()
 
         insert_line = self.find_first_empty_table()
-
+        size = len(str(data))
+        data = str(data)
         w2b = []
         free_blocks = 0
-        required_blocks = len(data) // 1024 + (1 if len(data) % 1024 > 0 else 0)
+        required_blocks = size // 1024 + (1 if size % 1024 > 0 else 0)
 
         if required_blocks > self.freeSpace:
             return False
@@ -194,7 +195,7 @@ class diskSim:
 
             # Prepare new entry as a string
             first_block = w2b[0] if len(w2b) > 0 else 0
-            new_entry = str([self.unique_id, name, file_type, parent_num, [], first_block, len(data)]) + "\n"
+            new_entry = str([self.unique_id, name, file_type, parent_num, [], first_block, size]) + "\n"
             self.unique_id += 1
             self.replace_line_by_index(self.catalogLoc, insert_line, new_entry)
 
@@ -228,6 +229,9 @@ class diskSim:
             return False
         with open(self.catalogLoc, "r") as catalog:
             lines = catalog.readlines()
+
+            # print("!!!!!target",type(target),target)
+
             AimCatalog = eval(lines[target])
         if AimCatalog[2] == "dir":
             # 返回目录下的文件名
@@ -253,7 +257,6 @@ class diskSim:
                         data += disk.read(1024)
                         disk.seek(int(disk.read(2), 16) * 1028)
                     return data
-
 
 
     def delete(self, path):
@@ -311,27 +314,27 @@ class diskSim:
             boot.write(str(self.freeSpace))
 
 
-diskSim = diskSim("Test")
-diskSim.initialize_system_enhanced()
-diskSim.write_file("test", "test", "root/test", "file")
-diskSim._mkdir("test", "root", "dir")
-diskSim.write_file("test", "test", "root/test", "file")
-diskSim._mkdir("largefolder", "root", "dir")
-diskSim._mkdir("largefolder2", "root/largefolder", "dir")
-diskSim.write_file("test", 'A' * 3000, "root/largefolder/largefolder2", "file")
-diskSim.write_file("test", 'A' * 3000, "root/largefolder", "file")
-diskSim._mkdir("largefolder1", "root", "dir")
-diskSim.delete("root/largefolder")
-diskSim.write_file("test1", "test1", "root/test", "file")
-diskSim._mkdir("test", "root", "dir")
-diskSim.write_file("test2", "test2", "root/test", "file")
-diskSim._mkdir("largefolder", "root", "dir")
-diskSim._mkdir("largefolder2", "root/largefolder", "dir")
-diskSim.write_file("test", 'A' * 3000, "root/largefolder/largefolder2", "file")
-diskSim.write_file("test", 'A' * 3000, "root/largefolder", "file")
-diskSim._mkdir("largefolder1", "root", "dir")
-diskSim.delete("root/largefolder")
-print(diskSim.read_file("root/test"))
-print(diskSim.read_file("root/test1"))
-print(diskSim.read_file("root/test/test2"))
-print(diskSim.read_file("root/largefolder1"))
+    def _ls(self, directory_path):
+        # 1. 获取目录行号
+        dir_line = self.get_line_of_parent(directory_path)
+        if dir_line is False:
+            print("Directory not found")
+            return []
+
+        # 2. 读取目录信息
+        with open(self.catalogLoc, "r") as catalog:
+            lines = catalog.readlines()
+        dir_info = eval(lines[dir_line])
+
+        # 3. 检查是否为目录
+        if dir_info[2] != "dir":
+            print("Not a directory")
+            return []
+
+        # 4. 获取并返回子目录和文件的名称
+        child_items = []
+        for child_line in dir_info[4]:
+            child_info = eval(lines[child_line])
+            child_items.append((child_info[1], child_info[2]))  # (name, type)
+
+        return child_items

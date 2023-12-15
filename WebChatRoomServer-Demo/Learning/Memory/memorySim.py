@@ -18,13 +18,14 @@ class memorySim:
             return False
 
         # 如果不存在，加入到内存中
-        for i in range(self.memSpace):
+        for i in range(len(self.table)):
             if not self.table[i]:
                 self.table[i] = True
                 self.cata[mid] = i
                 self.counter[mid] = data
                 self.memSpace -= 1
                 return True
+        print("Error: memorySim.add: memSpace != 0, but no space")
 
     def get(self, mid):
 
@@ -58,5 +59,6 @@ class memorySim:
         self.memSpace = len(self.table)
 
     def __str__(self):
-        pass
+        return "Table(Memory):",str(self.table), "cata:", str(self.cata), "counter",str(self.counter), "memSpace",str(self.memSpace)
+
 
