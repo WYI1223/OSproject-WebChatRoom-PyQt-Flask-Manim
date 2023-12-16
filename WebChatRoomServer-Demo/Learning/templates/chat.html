@@ -9,6 +9,13 @@
     <ul id="messages"></ul>
     <input id="name" autocomplete="off" />
     <input id="message" autocomplete="off" /><button onclick="sendMessage()">Send</button>
+    <button onclick="requestThreadInfo()">Get Thread Info</button>
+    <ul id="online-users"></ul>
+    <h3> Threads Info </h3>
+    <ul id="thread-info"></ul>
+    <h3>Memory Info:</h3>
+    <div id="memory-info"></div>
+
     <script type="text/javascript">
         var socket = io.connect('http://' + document.domain + ':' + location.port);
 
@@ -30,6 +37,19 @@
                 $('#online-users').append($('<li>').text(user));
             });
         });
+        socket.on('threads_info', function(threads) {
+            // 清空现有的线程信息列表
+            $('#thread-info').empty();
+            // 添加每个线程的信息
+            threads.forEach(function(thread) {
+                var threadInfo = 'Name: ' + thread.name + ', Alive: ' + thread.is_alive + ', Daemon: ' + thread.daemon;
+                $('#thread-info').append($('<li>').text(threadInfo));
+            });
+        });
+        socket.on('memory_info', function(memoryInfo) {
+            // 处理接收到的内存信息
+            $('#memory-info').text(memoryInfo);
+        });
 
         function sendMessage() {
             var message = $('#message').val();
@@ -42,7 +62,11 @@
 
             $('#message').val('');
         }
+        function requestThreadInfo() {
+            // 向服务器请求线程信息
+            socket.emit('threads_info_request');
+        }
     </script>
-    <ul id="online-users"></ul>
+
 </body>
 </html>
