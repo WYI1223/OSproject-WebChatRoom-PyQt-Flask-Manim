@@ -76,10 +76,11 @@ class ChatApp:
         self.log_condition.notify()
         self.mutex.release()
         self.update_online_users()
-        self.socketio.sleep(0.5)
+        time.sleep(0.5)
         # 发送聊天记录
         record = self.memoryScheduler._read("record")
-        self.socketio.emit('message_record', record, room=user_id)
+        with self.mutex:
+            self.socketio.emit('message_record', record, room=user_id)
     def handle_disconnect(self):
         user_id = request.sid
         disconnect_threads = threading.Thread(target=self.disconnect_threads,args=(user_id,), name=("disconnect_threads:" + user_id))
@@ -107,7 +108,8 @@ class ChatApp:
 
 
     def handle_message(self, data):
-        self.socketio.emit('receive_message', data)
+        with self.mutex:
+            self.socketio.emit('receive_message', data)
 
         recard = self.memoryScheduler._read("record")
         recard.append(data)

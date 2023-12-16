@@ -1,4 +1,5 @@
 import threading
+import time
 
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from qtChat import Ui_MainWindow
@@ -20,12 +21,21 @@ class myChat(QMainWindow, Ui_MainWindow):
         self.signup_button.clicked.connect(self.signup)
         #  socketio绑定事件
         self.socketio.on('receive_message', self.receive_message)
+        self.socketio.on('online_users', self.update_online_users)
+        self.socketio.on('message_record', self.recv_message_record)
 
+        self.username = None
+    def update_online_users(self, data):
+        time.sleep(1)
+        self.listWidget_2.clear()
+        for user in data:
+            self.listWidget_2.addItem(user)
 
-
-
+    def recv_message_record(self, data:dict):
+        for msg in data:
+            self.message_recv.addItem(msg['msg'])
     def receive_message(self, data):
-        self.message_recv.addItem(data)
+        self.message_recv.addItem(data['msg'])
 
     def send_message(self):
         text = self.message_input.toPlainText()
@@ -34,8 +44,8 @@ class myChat(QMainWindow, Ui_MainWindow):
         self.message_input.clear()
 
     def login(self):
-        pass
-
+        self.username = self.username_input.toPlainText()
+        self.socketio.emit('connect')
     def signup(self):
         pass
 
