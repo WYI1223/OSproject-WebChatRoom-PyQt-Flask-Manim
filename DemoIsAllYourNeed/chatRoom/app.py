@@ -3,7 +3,6 @@ from bson.json_util import dumps
 from flask import Flask, request
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_socketio import SocketIO, join_room, leave_room
-from pymongo.errors import DuplicateKeyError
 from db import get_user, save_user, save_room, add_room_members, get_rooms_for_user, get_room, is_room_member, \
     get_room_members, is_room_admin, update_room, remove_room_members, save_message, get_messages
 
@@ -49,7 +48,7 @@ def handle_signup(data):
     try:
         save_user(username, email, password)
         socketio.emit('signup_response', {'success': True})
-    except DuplicateKeyError:
+    except KeyError:
         socketio.emit('signup_response', {'success': False, 'message': 'User already exists!'})
 
 
@@ -60,11 +59,14 @@ def handle_create_room(data):
     usernames = [username.strip() for username in data['members'].split(',')]
 
     if len(room_name) and len(usernames):
-        room_id = save_room(room_name, current_user.username)
-        if current_user.username in usernames:
-            usernames.remove(current_user.username)
-        add_room_members(room_id, room_name, usernames, current_user.username)
-        socketio.emit('create_room_response', {'success': True, 'room_id': room_id})
+        try:
+            room_id = save_room(room_name, current_user.username)
+            if current_user.username in usernames:
+                usernames.remove(current_user.username)
+            add_room_members(room_id, room_name, usernames, current_user.username)
+            socketio.emit('create_room_response', {'success': True, 'room_id': room_id})
+        except KeyError:
+            socketio.emit('create_room_response', {'success': False, 'message': 'Failed to create room'})
     else:
         socketio.emit('create_room_response', {'success': False, 'message': 'Failed to create room'})
 
