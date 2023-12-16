@@ -7,7 +7,9 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+import sys
+from PyQt5 import QtCore, QtGui, QtWidgets
+    # Add other methods for signup, room creation, etc.
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -180,13 +182,4 @@ class BubbleDelegate(QtWidgets.QStyledItemDelegate):
 
     def sizeHint(self, option, index):
         return QtCore.QSize(300, 50)
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())
 
