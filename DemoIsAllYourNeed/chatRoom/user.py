@@ -1,11 +1,12 @@
 from werkzeug.security import check_password_hash
 
+
 class User:
-    def __init__(self, username, email, password):
+    def __init__(self, username, email, password_hash):
         # 用户类构造函数，用于初始化用户对象
         self.username = username
         self.email = email
-        self.password = password
+        self.password_hash = password_hash
 
     @staticmethod
     def is_authenticated():
@@ -28,4 +29,4 @@ class User:
 
     def check_password(self, password_input):
         # 检查用户输入的密码是否与存储的密码匹配
-        return check_password_hash(self.password, password_input)
+        return check_password_hash(self.password_hash, password_input)

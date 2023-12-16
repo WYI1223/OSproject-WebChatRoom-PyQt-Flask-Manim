@@ -3,18 +3,229 @@
 <head>
     <meta charset="UTF-8">
     <title>My Chat App</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
 </head>
 <body>
-<h1>My Chat App</h1>
-<h3>Hi {% if current_user.is_authenticated %}{{ current_user.username }}{% else %}Guest{% endif %}!</h3>
+    <h1>My Chat App</h1>
 
-{% if current_user.is_authenticated %}
-    <h3>My rooms</h3>
-    <ul>
-        {% for room in rooms %}
-            <li><a href="/rooms/{{ room._id.room_id }}">{{ room.room_name }}</a></li>
-        {% endfor %}
-    </ul>
-{% endif %}
+    <div id="loginContainer">
+        <h3>Login</h3>
+        <form id="loginForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Login</button>
+        </form>
+        <div id="loginMessage"></div>
+    </div>
+
+    <div id="signupContainer">
+        <h3>Signup</h3>
+        <form id="signupForm">
+            <label for="newUsername">Username:</label>
+            <input type="text" id="newUsername" name="newUsername" required>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <label for="newPassword">Password:</label>
+            <input type="password" id="newPassword" name="newPassword" required>
+            <button type="submit">Signup</button>
+        </form>
+        <div id="signupMessage"></div>
+    </div>
+
+    <div id="chatContainer" style="display: none;">
+        <h3 id="greeting">Hi Guest!</h3>
+
+        <div id="roomsContainer">
+            <h3>My rooms</h3>
+            <ul id="roomsList"></ul>
+        </div>
+
+        <div id="createRoomContainer">
+            <h3>Create Room</h3>
+            <form id="createRoomForm">
+                <label for="roomName">Room Name:</label>
+                <input type="text" id="roomName" name="roomName" required>
+                <label for="members">Members (comma-separated):</label>
+                <input type="text" id="members" name="members">
+                <button type="submit">Create Room</button>
+            </form>
+            <div id="createRoomMessage"></div>
+        </div>
+
+        <div id="viewRoomContainer" style="display: none;">
+            <h3>View Room</h3>
+            <div id="roomDetails"></div>
+            <ul id="messagesList"></ul>
+            <button id="loadMoreMessages" style="display: none;">Load More</button>
+            <form id="sendMessageForm">
+                <label for="message">Message:</label>
+                <input type="text" id="message" name="message" required>
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const socket = io.connect('http://localhost:5000');  // Replace with your server address
+
+        socket.on('connect', () => {
+            console.log('Connected to server');
+        });
+
+        socket.on('login_response', (data) => {
+            if (data.success) {
+                updateGreeting(data.username);
+                updateRoomsList(data.rooms);
+                showChatContainer();
+            } else {
+                updateLoginMessage(data.message);
+            }
+        });
+
+        socket.on('signup_response', (data) => {
+            if (data.success) {
+                switchContainer('loginContainer');
+            } else {
+                updateSignupMessage(data.message);
+            }
+        });
+
+        socket.on('create_room_response', (data) => {
+            if (data.success) {
+                switchContainer('chatContainer', 'createRoomContainer');
+                updateRoomsList([{ room_id: data.room_id, room_name: document.getElementById('roomName').value }]);
+            } else {
+                updateCreateRoomMessage(data.message);
+            }
+        });
+
+        socket.on('view_room_response', (data) => {
+            if (data.success) {
+                switchContainer('chatContainer', 'viewRoomContainer');
+                updateRoomDetails(data.room, data.room_members);
+                updateMessagesList(data.messages);
+            } else {
+                alert(data.message);
+            }
+        });
+
+        socket.on('get_older_messages_response', (data) => {
+            updateMessagesList(data.messages, true);
+        });
+
+        socket.on('receive_message', (data) => {
+            updateMessagesList([data], true);
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', (event) => {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            socket.emit('login', { username, password });
+        });
+
+        document.getElementById('signupForm').addEventListener('submit', (event) => {
+            event.preventDefault();
+            const username = document.getElementById('newUsername').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('newPassword').value;
+            socket.emit('signup', { username, email, password });
+        });
+
+        document.getElementById('createRoomForm').addEventListener('submit', (event) => {
+            event.preventDefault();
+            const roomName = document.getElementById('roomName').value;
+            const members = document.getElementById('members').value;
+            socket.emit('create_room', { room_name: roomName, members: members });
+        });
+
+        document.getElementById('viewRoomContainer').addEventListener('submit', (event) => {
+            event.preventDefault();
+            const message = document.getElementById('message').value;
+            socket.emit('send_message', { room: currentRoomId, username: currentUsername, message: message });
+        });
+
+        function updateGreeting(username) {
+            document.getElementById('greeting').textContent = `Hi ${username}!`;
+        }
+
+        function updateLoginMessage(message) {
+            document.getElementById('loginMessage').textContent = message;
+        }
+
+        function updateSignupMessage(message) {
+            document.getElementById('signupMessage').textContent = message;
+        }
+
+        function updateCreateRoomMessage(message) {
+            document.getElementById('createRoomMessage').textContent = message;
+        }
+
+        function updateRoomsList(rooms) {
+            const roomsList = document.getElementById('roomsList');
+            roomsList.innerHTML = '';
+
+            rooms.forEach(room => {
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `javascript:void(0);`;
+                link.textContent = room.room_name;
+                link.addEventListener('click', () => {
+                    socket.emit('view_room', { room_id: room.room_id });
+                });
+                listItem.appendChild(link);
+                roomsList.appendChild(listItem);
+            });
+        }
+
+        function updateRoomDetails(room, roomMembers) {
+            const roomDetails = document.getElementById('roomDetails');
+            roomDetails.innerHTML = `<p>Room Name: ${room.name}</p>
+                                    <p>Created By: ${room.created_by}</p>
+                                    <p>Room Members: ${roomMembers.map(member => member._id.username).join(', ')}</p>`;
+        }
+
+        function updateMessagesList(messages, append = false) {
+            const messagesList = document.getElementById('messagesList');
+            if (!append) {
+                messagesList.innerHTML = '';
+            }
+
+            messages.forEach(message => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `[${message.created_at}] ${message.sender}: ${message.text}`;
+                messagesList.appendChild(listItem);
+            });
+
+            if (messages.length > 0) {
+                const loadMoreButton = document.getElementById('loadMoreMessages');
+                loadMoreButton.style.display = 'block';
+                loadMoreButton.addEventListener('click', () => {
+                    const page = Math.floor(messagesList.children.length / 3);
+                    socket.emit('get_older_messages', { room_id: currentRoomId, page: page });
+                });
+            }
+        }
+
+        function switchContainer(showContainerId, hideContainerId = null) {
+            const showContainer = document.getElementById(showContainerId);
+            showContainer.style.display = 'block';
+
+            if (hideContainerId) {
+                const hideContainer = document.getElementById(hideContainerId);
+                hideContainer.style.display = 'none';
+            }
+        }
+
+        function showChatContainer() {
+            switchContainer('chatContainer', 'loginContainer');
+        }
+
+        // You can add more event listeners for other socket events
+
+        // Remember to include proper error handling and security measures in a production environment.
+    </script>
 </body>
 </html>
