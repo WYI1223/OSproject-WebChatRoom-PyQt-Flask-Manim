@@ -1,8 +1,9 @@
 import threading
 import time
-import memorySim
-import virtualMemorySim
-import diskSim
+from . import memorySim
+from . import virtualMemorySim
+from . import diskSim
+
 
 
 # 内存调度器
@@ -126,46 +127,46 @@ class memoryScheduler:
         return "Memory:", self.memory.__str__(), "Vmemory", self.vmemory.getTable(), \
                "MemoryScheduler:", self.table, self.vmemoryTable
 
-
-if __name__ == "__main__":
-    def getstate(memoryscheduler):
-        while(True):
-            print(memoryscheduler._getstate())
-            # time.sleep(0.5)
-
-    def writeCycle(memoryscheduler):
-        i = 0
-        while(True):
-            i += 1
-            memoryscheduler._write(str(i),str(i))
-            print("write", i)
-            # time.sleep(0.5)
-    def readCycle(memoryscheduler):
-        j = 0
-        while(True):
-            j += 1
-            print("read", str(j), memoryscheduler._read(str(j)))
-            # time.sleep(0.5)
-
-    def deleteCycle(memoryscheduler):
-        k = 0
-        while(True):
-            k += 1
-            memoryscheduler._release(str(k))
-            print("delete", str(k))
-            # time.sleep(0.5)
-
-    diskSim = diskSim.diskSim("server1")
-    diskSim.initialize_system_enhanced()
-    diskSim._mkdir("server1", "root")
-    memoryScheduler = memoryScheduler("server1", 10, diskSim)
-    t1 = threading.Thread(target=getstate, args=(memoryScheduler,))
-    t2 = threading.Thread(target=writeCycle, args=(memoryScheduler,))
-    t3 = threading.Thread(target=readCycle, args=(memoryScheduler,))
-    t4 = threading.Thread(target=deleteCycle, args=(memoryScheduler,))
-    t1.start()
-    t2.start()
-    time.sleep(1)
-    t3.start()
-    time.sleep(1)
-    t4.start()
+#
+# if __name__ == "__main__":
+#     def getstate(memoryscheduler):
+#         while(True):
+#             print(memoryscheduler._getstate())
+#             # time.sleep(0.5)
+#
+#     def writeCycle(memoryscheduler):
+#         i = 0
+#         while(True):
+#             i += 1
+#             memoryscheduler._write(str(i),str(i))
+#             print("write", i)
+#             # time.sleep(0.5)
+#     def readCycle(memoryscheduler):
+#         j = 0
+#         while(True):
+#             j += 1
+#             print("read", str(j), memoryscheduler._read(str(j)))
+#             # time.sleep(0.5)
+#
+#     def deleteCycle(memoryscheduler):
+#         k = 0
+#         while(True):
+#             k += 1
+#             memoryscheduler._release(str(k))
+#             print("delete", str(k))
+#             # time.sleep(0.5)
+#
+#     diskSim = diskSim.diskSim("server1")
+#     diskSim.initialize_system_enhanced()
+#     diskSim._mkdir("server1", "root")
+#     memoryScheduler = memoryScheduler("server1", 10, diskSim)
+#     t1 = threading.Thread(target=getstate, args=(memoryScheduler,))
+#     t2 = threading.Thread(target=writeCycle, args=(memoryScheduler,))
+#     t3 = threading.Thread(target=readCycle, args=(memoryScheduler,))
+#     t4 = threading.Thread(target=deleteCycle, args=(memoryScheduler,))
+#     t1.start()
+#     t2.start()
+#     time.sleep(1)
+#     t3.start()
+#     time.sleep(1)
+#     t4.start()

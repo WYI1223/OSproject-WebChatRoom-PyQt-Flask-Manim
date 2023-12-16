@@ -1,9 +1,9 @@
-import os
-import diskSim
+from . import diskSim
+
 
 class virtualMemorySim:
 
-    def __init__(self, serverName: str, disk: diskSim):
+    def __init__(self, serverName: str, disk:diskSim):
 
         # disk是一个diskSim对象，虚拟内存的数据将存储在diskSim对象中
         # DiskSim = DiskSim(硬盘名称)
@@ -15,7 +15,7 @@ class virtualMemorySim:
         # DiskSim.free_space() # 返回磁盘剩余空间
         self.disk = disk
         self.serverName = serverName
-        disk._mkdir("VirtualMemory", "root/"+serverName)
+        self.disk._mkdir("VirtualMemory", "root/"+serverName)
         self.table = {} # 虚拟内存的索引表 {"mid": "location"}
         self.location = "root/"+serverName+"/VirtualMemory"
 

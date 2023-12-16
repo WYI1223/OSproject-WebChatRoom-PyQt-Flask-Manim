@@ -1,5 +1,6 @@
-from DISK import diskSim
-from Memory import memorySim, virtualMemorySim
+import threading
+
+from Memory import diskSim, memorySim, virtualMemorySim ,memorySchedule
 from flask import Flask, render_template, request
 from flask_socketio import SocketIO
 
@@ -21,9 +22,7 @@ class ChatApp:
         self.online_users = set()
         # self.memoryScheduler = Memory.memoryScheduler("server1", 100)
         self.diskSim = diskSim.diskSim("server1")
-        self.virtualMemorySim = virtualMemorySim.virtualMemorySim("server1")
-        self.memorySim = memorySim.memorySim(100)
-
+        self.memoryScheduler = memorySchedule.memoryScheduler("server1", 100, self.diskSim)
         # 储存聊天记录 [(time,data),(time,data),(time,data)]
         self.record = []
 
@@ -32,11 +31,21 @@ class ChatApp:
 
     def handle_connect(self):
         user_id = request.sid
+        connect_threads = threading.Thread(target=self.connect_threads,args=(user_id,))
+        connect_threads.run()
+
+    def connect_threads(self,user_id):
+
+        # 为每个用户创建一个线程，用于处理用户的连接请求，防止阻塞主线程。
+        #
+        mutex = threading.Lock()
+        mutex.acquire()
         self.online_users.add(user_id)
         self.update_online_users()
+        mutex.release()
+
         self.socketio.sleep(0.5)
         self.socketio.emit('message_record', self.record, room=user_id)
-
     def handle_disconnect(self):
         user_id = request.sid
         self.online_users.discard(user_id)
