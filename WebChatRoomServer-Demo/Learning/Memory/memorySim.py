@@ -59,6 +59,21 @@ class memorySim:
         self.memSpace = len(self.table)
 
     def __str__(self):
-        return "Table(Memory):",str(self.table), "cata:", str(self.cata), "counter",str(self.counter), "memSpace",str(self.memSpace)
+        memory_status = "Memory Status:\n"
+
+        for i, is_used in enumerate(self.table):
+            memory_status += f"  Block {i + 1}: {'Used' if is_used else 'Free'}\n"
+
+        memory_status += "\nCatalog:\n"
+        for mid, index in self.cata.items():
+            memory_status += f"  {mid} -> Block {index + 1}\n"
+
+        memory_status += "\nCounter:\n"
+        for mid, data in self.counter.items():
+            memory_status += f"  {mid} -> {data}\n"
+
+        memory_status += f"\nFree Space: {self.memSpace} blocks\n"
+
+        return memory_status
 
 
