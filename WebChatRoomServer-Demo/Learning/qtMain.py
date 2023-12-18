@@ -30,7 +30,6 @@ class myChat(QMainWindow, Ui_MainWindow):
         self.listWidget_2.clear()
         for user in data:
             self.listWidget_2.addItem(user)
-
     def recv_message_record(self, data:dict):
         for msg in data:
             self.message_recv.addItem(msg['msg'])
