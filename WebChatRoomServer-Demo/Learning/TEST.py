@@ -69,7 +69,7 @@ class ChatApp:
             if username in self.users and password == self.users[username]:
                 self.socketio.emit('system_info', "Login successful ", room=user_id)
                 self.users_id.update({user_id: username})
-                self.socketio.emit('message_record',self.history_message)
+                self.socketio.emit('message_record',self.history_message,room=user_id)
             else:
                 self.socketio.emit('system_info', "Check your username or password. Or sign up", room=user_id)
                 return
@@ -137,9 +137,7 @@ class ChatApp:
 
         self.mutex.acquire()
         # 读取内存中的在线用户列表，删除该用户，并更新在线用户列表。
-        online_users = self.memoryScheduler._read("online_users")
-        online_users.discard(user_id)
-        self.memoryScheduler._update("online_users", online_users)
+        self.users_id.pop(user_id)
 
         self.log.put("RunningInfo: "+"user_id: " + user_id + " disconnected.")
         self.log_condition.notify()
@@ -155,12 +153,12 @@ class ChatApp:
     def handle_message(self, data):
         user_id = request.sid
         if user_id not in self.users_id:
-            self.socketio.emit('system_info',"You need to login then to send message!")
+            self.socketio.emit('system_info',"You need to login then to send message!",room=user_id)
             return
         user_name = self.users_id[user_id]
         data = user_name+": "+data
         with self.mutex:
-            self.socketio.emit('receive_message', data)
+            self.socketio.emit('receive_message', data,room=list(self.users_id.keys()))
 
         self.history_message.append(data)
         # recard = self.memoryScheduler._read("record")
