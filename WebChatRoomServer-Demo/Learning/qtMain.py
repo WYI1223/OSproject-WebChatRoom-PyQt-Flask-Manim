@@ -44,7 +44,7 @@ class myChat(QMainWindow, Ui_MainWindow):
     def recv_message_record(self, data):
         if data is not None:
             for i in data:
-                self.message_recv.addItem(data[i])
+                self.message_recv.addItem(i)
     def receive_message(self, data):
         self.message_recv.addItem(data)
 

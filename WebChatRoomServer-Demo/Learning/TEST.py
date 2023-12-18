@@ -29,17 +29,19 @@ class ChatApp:
 
         self.memoryScheduler = memorySchedule.memoryScheduler("server1", 10, self.diskSim)
 
+        # 共享锁
+        self.mutex = threading.Lock()
+
         # 在线用户列表 mid:online_users
-        users = {'user_id': 'password'}
+        users = self.user_info()
         users_id = {'user_id': 'user_name'}
         self.memoryScheduler._write("user-pwd", users)
         self.memoryScheduler._write("user-id", users_id)
 
         # 储存聊天记录 [(time,data),(time,data),(time,data)]
-        self.history_message=[]
+        self.memoryScheduler._write("history_message", [])
 
-        # 共享锁
-        self.mutex = threading.Lock()
+
         # 服务器日志
         self.log_condition = threading.Condition(self.mutex)
         self.log = queue.LifoQueue()
@@ -47,6 +49,15 @@ class ChatApp:
 
     def index(self):
         return render_template('chat.html')
+
+    def user_info(self):
+        data = self.diskSim.read_file("root/"+"server1"+"/user_info")
+        if data is False:
+            self.diskSim.write_file("user_info", {'user_id': 'password'} , "root/"+"server1")
+            return self.diskSim.read_file("root/"+"server1"+"/user_info")
+        return eval(data)
+
+
     def savelog(self):
         log_thread = threading.Thread(target=self.savelogqueue,name="savelog")
         log_thread.start()
@@ -71,9 +82,14 @@ class ChatApp:
 
         username, password, state = data
 
+        users = self.memoryScheduler._read("user-pwd")
         if state == "login":
-            self.users = self.memoryScheduler._read("user-pwd")
-            if username in self.users and password == self.users[username]:
+            # 如果已登录，提示用户已登录
+            if user_id in self.memoryScheduler._read("user-id"):
+                self.socketio.emit('system_info', "You have already logged in", room=user_id)
+                return
+            # 特权用户
+            if username == "admin" and password == "admin":
                 self.socketio.emit('system_info', "Login successful ", room=user_id)
 
                 # 更新在线用户列表
@@ -81,56 +97,61 @@ class ChatApp:
                 self.users_id.update({user_id: username})
                 self.memoryScheduler._update("user-id", self.users_id)
 
+                self.socketio.emit('message_record', self.memoryScheduler._read("history_message"), room=user_id)
+                return
+            if username in users and password == users[username]:
+                self.socketio.emit('system_info', "Login successful ", room=user_id)
 
-                self.socketio.emit('message_record', self.history_message)
+                # 更新在线用户列表
+                self.users_id = self.memoryScheduler._read("user-id")
+                self.users_id.update({user_id: username})
+                self.memoryScheduler._update("user-id", self.users_id)
+
+                self.socketio.emit('message_record',self.memoryScheduler._read("history_message"),room=user_id)
+
             else:
                 self.socketio.emit('system_info', "Check your username or password. Or sign up", room=user_id)
                 return
-            connect_threads = threading.Thread(target=self.connect_threads, args=(user_id, username),
+            connect_threads = threading.Thread(target=self.connect_threads, args=(user_id, ),
                                                name=("connect_threads:" + user_id))
             connect_threads.start()
             self.handle_threads_info_request()
 
         if state == "signup":
-            if username in self.users:
+            if username in users:
                 self.socketio.emit('system_info', "User have signed up", room=user_id)
             else:
-                self.users.update({username: password})
+                # 新用户注册
+                users.update({username: password})
+                # 更新内存
+                self.memoryScheduler._update("user-pwd", users)
+                # 写入文件
+                self.diskSim.delete("root/" + "server1"+"/user_info")
+                self.diskSim.write_file("user_info", users, "root/" + "server1")
                 self.socketio.emit('system_info', "Signup successfully", room=user_id)
                 return
 
-    def handle_connect(self, ):
-            user_id = request.sid
-            connect_threads = threading.Thread(target=self.connect_threads,args=(user_id,"admin"), name=("connect_threads:" + user_id))
-            connect_threads.start()
-            # 更新线程信息
-            self.handle_threads_info_request()
+    def handle_connect(self):
+        user_id = request.sid
+        connect_threads = threading.Thread(target=self.connect_threads,args=(user_id,), name=("connect_threads:" + user_id))
+        connect_threads.start()
+        # 更新线程信息
+        self.handle_threads_info_request()
 
 
-
-    def connect_threads(self,user_id,username):
+    def connect_threads(self,user_id):
         # 为每个用户创建一个线程，用于处理用户的连接请求，防止阻塞主线程。
 
         self.mutex.acquire()
-        # 读取内存中的在线用户列表，将新用户添加到列表中，并更新在线用户列表。
-        # self.users_online.append(username) # 将用户名添加到在线用户名列表
-
-        online_users = self.memoryScheduler._read("online_users")
-        online_users.add(user_id)
-        self.memoryScheduler._update("online_users", online_users)
-
         self.log.put("RunningInfo: " + "user_id: " + user_id + " connected.")
         self.log_condition.notify()
         self.mutex.release()
         self.update_online_users()
         time.sleep(0.5)
         # 发送聊天记录
-        record = self.memoryScheduler._read("record")
-        with self.mutex:
-            self.socketio.emit('message_record', record, room=user_id)
     def handle_disconnect(self):
         user_id = request.sid
-        self.users_id.pop(user_id)
+
         disconnect_threads = threading.Thread(target=self.disconnect_threads,args=(user_id,), name=("disconnect_threads:" + user_id))
         disconnect_threads.start()
         # 更新线程信息
@@ -140,9 +161,10 @@ class ChatApp:
 
         self.mutex.acquire()
         # 读取内存中的在线用户列表，删除该用户，并更新在线用户列表。
-        online_users = self.memoryScheduler._read("online_users")
-        online_users.discard(user_id)
-        self.memoryScheduler._update("online_users", online_users)
+        online_users = self.memoryScheduler._read("user-id")
+        online_users.pop(user_id)
+        self.memoryScheduler._update("user-id", online_users)
+
 
         self.log.put("RunningInfo: "+"user_id: " + user_id + " disconnected.")
         self.log_condition.notify()
@@ -152,23 +174,27 @@ class ChatApp:
     def update_online_users(self):
         with self.mutex:
             # online_users = self.memoryScheduler._read("online_users")
-            self.socketio.emit('online_users', list(self.users_id.values()))
+            self.socketio.emit('online_users', list(self.memoryScheduler._read("user-id").values()))
 
 
     def handle_message(self, data):
         user_id = request.sid
-        if user_id not in self.users_id:
-            self.socketio.emit('system_info',"You need to login then to send message!")
+
+        users_id = self.memoryScheduler._read("user-id")
+
+        if user_id not in users_id:
+            self.socketio.emit('system_info',"You need to login then to send message!", room=user_id)
             return
-        user_name = self.users_id[user_id]
+        user_name = users_id[user_id]
+
         data = user_name+": "+data
         with self.mutex:
-            self.socketio.emit('receive_message', data)
+            self.socketio.emit('receive_message', data, room=list(self.memoryScheduler._read("user-id").keys()))
 
-        self.history_message.append(data)
-        # recard = self.memoryScheduler._read("record")
-        # recard.append(data)
-        # self.memoryScheduler._update("record", recard)
+        # 更新聊天记录
+        history_message = self.memoryScheduler._read("history_message")
+        history_message.append(data)
+        self.memoryScheduler._update("history_message", history_message)
 
         with self.mutex:
             self.log.put("Message received: " + str(data))
