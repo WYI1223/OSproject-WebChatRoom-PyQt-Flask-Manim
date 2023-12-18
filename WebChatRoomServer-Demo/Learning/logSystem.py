@@ -41,7 +41,7 @@ class logSystem:
                         except json.JSONDecodeError:
                             # 如果解析失败，就将old_log设置为空列表
                             print("Error: logSystem.save_log_queue: JSONDecodeError")
-                            old_log = []
+                            # old_log = []
                     else:
                         old_log = []
 
@@ -55,9 +55,11 @@ class logSystem:
 
     def put(self, log):
         with self.mutex:
-            self.log.put(log)
+            self.log.put(log +" at " + str(time.time()))
             self.log_condition.notify()
 
 
     def get(self):
-        return json.loads(self.disk.read_file(self.logloc+"/log"))
+        text = self.disk.read_file(self.logloc+"/log")
+        print(text)
+        return json.loads(text)

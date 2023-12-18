@@ -254,10 +254,19 @@ class diskSim:
                 # 如果文件大小大于1024，需要读取多个块
                 else:
                     block_num = AimCatalog[6] // 1024 + (1 if AimCatalog[6] % 1024 > 0 else 0)
+                    # print("!!!!!block_num",block_num)
                     data = ""
+                    current_block = AimCatalog[5]
                     for i in range(block_num):
                         data += disk.read(1024)
-                        disk.seek(int(disk.read(2), 16) * 1028)
+                        # print(i," ",disk.tell())
+                        if i + 1 == block_num:
+                            break
+                        offset = int(disk.read(2), 16)
+                        current_block += offset
+                        # print(offset,"offset!!!!!!")
+                        disk.seek(current_block * 1028)
+
                     return data
 
 

@@ -61,6 +61,10 @@ class ChatApp:
         self.socketio.emit('log', self.logSystem.get(), room=user_id)
 
     def loginSystem(self, data):
+
+        # 模拟内存占用
+        self.memoryScheduler._write("loginSystem", data)
+
         user_id = request.sid
         self.logSystem.put("RunningInfo: " + "user_id: " + user_id + " loginSystem: " + str(data))
         if data == None:
@@ -69,6 +73,9 @@ class ChatApp:
             connect_threads.start()
             # 更新线程信息
             self.handle_threads_info_request()
+
+            # 模拟内存释放
+            self.memoryScheduler._release("loginSystem")
             return
 
         username, password, state = data
@@ -78,6 +85,9 @@ class ChatApp:
             # 如果已登录，提示用户已登录
             if user_id in self.memoryScheduler._read("user-id"):
                 self.socketio.emit('system_info', "You have already logged in", room=user_id)
+
+                # 模拟内存释放
+                self.memoryScheduler._release("loginSystem")
                 return
             # 特权用户
             if username == "admin" and password == "admin":
@@ -90,6 +100,9 @@ class ChatApp:
                 self.memoryScheduler._update("user-id", self.users_id)
 
                 self.socketio.emit('message_record', self.memoryScheduler._read("history_message"), room=user_id)
+
+                # 模拟内存释放
+                self.memoryScheduler._release("loginSystem")
                 return
             if username in users and password == users[username]:
                 self.socketio.emit('system_info', "Login successful ", room=user_id)
@@ -103,15 +116,21 @@ class ChatApp:
 
             else:
                 self.socketio.emit('system_info', "Check your username or password. Or sign up", room=user_id)
+                # 模拟内存释放
+                self.memoryScheduler._release("loginSystem")
                 return
             connect_threads = threading.Thread(target=self.connect_threads, args=(user_id,),
                                                name=("connect_threads:" + user_id))
             connect_threads.start()
             self.handle_threads_info_request()
+            # 模拟内存释放
+            self.memoryScheduler._release("loginSystem")
 
         if state == "signup":
             if username in users:
                 self.socketio.emit('system_info', "User have signed up", room=user_id)
+                # 模拟内存释放
+                self.memoryScheduler._release("loginSystem")
             else:
                 # 新用户注册
                 users.update({username: password})
@@ -122,7 +141,10 @@ class ChatApp:
                 self.diskSim.write_file("user_info", users, "root/" + "server1")
                 self.logSystem.put("RunningInfo: " + "user_id: " + user_id + " loginSystem: " + str(data))
                 self.socketio.emit('system_info', "Signup successfully", room=user_id)
+                # 模拟内存释放
+                self.memoryScheduler._release("loginSystem")
                 return
+
 
     def handle_connect(self):
         user_id = request.sid
@@ -140,7 +162,7 @@ class ChatApp:
         # 更新线程信息
         self.handle_threads_info_request()
 
-    def connect_threads(self, user_id):
+    def connect_threads(self, user_id,):
         # 为每个用户创建一个线程，用于处理用户的连接请求，防止阻塞主线程。
 
         self.mutex.acquire()
@@ -175,6 +197,8 @@ class ChatApp:
         """
         为每个用户创建一个线程，用于处理用户的消息，防止阻塞主线程。并且为线程命名。
         """
+        # 模拟内存占用
+        self.memoryScheduler._write("handle_message_threads", data)
 
         self.logSystem.put("RunningInfo: " + "user_id: " + user_id + " send message: " + str(data))
         users_id = self.memoryScheduler._read("user-id")
@@ -228,7 +252,7 @@ class ChatApp:
                 for i in self.memoryScheduler._getstate():
                     memory_info.append(str(i))
                 self.socketio.emit('memory_info', memory_info)
-                time.sleep(1)  # 每1秒发送一次
+                time.sleep(0.5)  # 每1秒发送一次
 
         thread = threading.Thread(target=loop, name="memory_info_loop")
         thread.daemon = True  # 设置为守护线程，这样当主程序退出时，这个线程也会退出

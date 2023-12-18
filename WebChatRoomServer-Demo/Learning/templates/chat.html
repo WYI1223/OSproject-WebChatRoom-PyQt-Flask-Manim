@@ -20,9 +20,6 @@
         var socket = io.connect('http://' + document.domain + ':' + location.port);
 
         socket.on('connect', function() {
-            var now = new Date();
-            var timestamp = now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
-            socket.emit('message', { msg: 'User has connected!', timestamp: timestamp });
         });
 
         socket.on('receive_message', function(data) {
