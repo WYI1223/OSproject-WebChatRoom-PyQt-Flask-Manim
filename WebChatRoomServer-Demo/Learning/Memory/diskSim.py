@@ -85,7 +85,10 @@ class diskSim:
                         children = eval(lines[child])[4]
                         break
                     else:
+                        if child == children[-1]:
+                            return False
                         continue
+
 
         return targetLoc[-1]
 
@@ -139,8 +142,7 @@ class diskSim:
             self.replace_line_by_index(self.catalogLoc, parent_num, str(parentCatalog) + "\n")
 
             # Prepare new entry as a string
-            new_entry = str([self.unique_id , name, file_type, parent_num, [], 9999, 0]) + "\n"
-            self.unique_id += 1
+            new_entry = str([inerset_line, name, file_type, parent_num, [], 9999, 0]) + "\n"
             self.replace_line_by_index(self.catalogLoc, inerset_line, new_entry)
 
             # Write updated lines back to catalog
@@ -195,8 +197,8 @@ class diskSim:
 
             # Prepare new entry as a string
             first_block = w2b[0] if len(w2b) > 0 else 0
-            new_entry = str([self.unique_id, name, file_type, parent_num, [], first_block, size]) + "\n"
-            self.unique_id += 1
+            new_entry = str([insert_line, name, file_type, parent_num, [], first_block, size]) + "\n"
+
             self.replace_line_by_index(self.catalogLoc, insert_line, new_entry)
 
             # Write updated lines back to catalog
@@ -204,7 +206,7 @@ class diskSim:
                 # 更新 Table 和 Disk 文件
                 for i in range(len(w2b)):
                     start_blocks = w2b[i]
-                    blocks[start_blocks] = f"{self.unique_id}\n"
+                    blocks[start_blocks] = f"{insert_line}\n"
                     disk.seek(start_blocks * 1028)  # 定位到开始块
                     if i + 1 == len(w2b):
                         disk.write(data[i * 1024:])
@@ -230,7 +232,7 @@ class diskSim:
         with open(self.catalogLoc, "r") as catalog:
             lines = catalog.readlines()
 
-            # print("!!!!!target",type(target),target)
+            print("!!!!!target",type(target),target)
 
             AimCatalog = eval(lines[target])
         if AimCatalog[2] == "dir":
