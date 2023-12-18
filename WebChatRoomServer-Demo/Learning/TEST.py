@@ -14,6 +14,7 @@ class ChatApp:
         self.socketio = SocketIO(self.app, cors_allowed_origins="*")
 
         self.users = {'user_id': 'password'}
+        self.users_id = {'user_id': 'user_name'}
 
         # 绑定路由和事件处理函数
         self.app.route('/')(self.index)
@@ -32,7 +33,7 @@ class ChatApp:
 
         # 在线用户列表 mid:online_users
         self.memoryScheduler._write("online_users", set())
-        self.users_online = []
+
 
         # 储存聊天记录 [(time,data),(time,data),(time,data)]
         self.memoryScheduler._write("record", [])
@@ -54,7 +55,6 @@ class ChatApp:
     def changeLabel(self,data):
         user_id = request.sid
         if data == None:
-            print("done!!!")
             connect_threads = threading.Thread(target=self.connect_threads,args=(user_id,"admin"), name=("connect_threads:" + user_id))
             connect_threads.start()
               #更新线程信息
@@ -63,14 +63,11 @@ class ChatApp:
         username = data[0]
         password = data[1]
         state = data[2]
-        print("done")
-        print(username)
-        print(password)
-        print(state)
+
         if state == "login":
-            print("done")
             if username in self.users and password == self.users[username]:
                 self.socketio.emit('system_info', "Login successful ", room=user_id)
+                self.users_id.update({user_id: username})
             else:
                 self.socketio.emit('system_info', "Check your username or password. Or sign up", room=user_id)
                 return
@@ -81,10 +78,10 @@ class ChatApp:
 
         if state == "signup":
             if username in self.users:
-                self.socketio.emit('system_info', "User have signed up")
+                self.socketio.emit('system_info', "User have signed up", room=user_id)
             else:
                 self.users.update({username: password})
-                self.socketio.emit('system_info', "Signup successfully")
+                self.socketio.emit('system_info', "Signup successfully", room=user_id)
                 return
             
     def savelogqueue(self):
@@ -99,7 +96,6 @@ class ChatApp:
 
     def handle_connect(self, ):
             user_id = request.sid
-            print("done!!!")
             connect_threads = threading.Thread(target=self.connect_threads,args=(user_id,"admin"), name=("connect_threads:" + user_id))
             connect_threads.start()
             # 更新线程信息
@@ -112,7 +108,7 @@ class ChatApp:
 
         self.mutex.acquire()
         # 读取内存中的在线用户列表，将新用户添加到列表中，并更新在线用户列表。
-        self.users_online.append(username) # 将用户名添加到在线用户名列表
+        # self.users_online.append(username) # 将用户名添加到在线用户名列表
 
         online_users = self.memoryScheduler._read("online_users")
         online_users.add(user_id)
@@ -129,6 +125,7 @@ class ChatApp:
             self.socketio.emit('message_record', record, room=user_id)
     def handle_disconnect(self):
         user_id = request.sid
+        self.users_id.pop(user_id)
         disconnect_threads = threading.Thread(target=self.disconnect_threads,args=(user_id,), name=("disconnect_threads:" + user_id))
         disconnect_threads.start()
         # 更新线程信息
@@ -149,8 +146,8 @@ class ChatApp:
 
     def update_online_users(self):
         with self.mutex:
-            online_users = self.memoryScheduler._read("online_users")
-            self.socketio.emit('online_users', list(online_users))
+            # online_users = self.memoryScheduler._read("online_users")
+            self.socketio.emit('online_users', list(self.users_id.values()))
 
 
     def handle_message(self, data):
@@ -185,9 +182,10 @@ class ChatApp:
         """
         def loop():
             while True:
-                memory_info = str(self.memoryScheduler._getstate())
+                memory_info = []
+                for i in self.memoryScheduler._getstate():
+                    memory_info.append(str(i))
                 self.socketio.emit('memory_info', memory_info)
-                # print(memory_info)
                 time.sleep(1)  # 每1秒发送一次
         thread = threading.Thread(target=loop, name="memory_info_loop")
         thread.daemon = True  # 设置为守护线程，这样当主程序退出时，这个线程也会退出
