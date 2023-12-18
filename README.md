@@ -6,7 +6,7 @@
 通过该项目，可以学习到PyQt5、Flask、Manim的基本使用方法，以及操作系统的一些基本概念。
 代码能力复健用。
 
-<<<<<<< Updated upstream
+
 在中文互联网上流传着这么一句话“不要重复造轮子”，但是今天我们的理念是try to make a wheel。
 尽管我们的wheel目前还无法独立工作，但是在这个项目完成之后，对于造一个真正的轮子也有了不少见解。
 
@@ -21,8 +21,9 @@
 ![img_1.png](img_1.png)
 
 FAT结构
+>   ![img_3.png](img_3.png)
 
-![img_3.png](img_3.png)
+
 
 
 

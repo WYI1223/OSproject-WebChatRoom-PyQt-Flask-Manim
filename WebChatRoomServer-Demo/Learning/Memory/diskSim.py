@@ -118,7 +118,7 @@ class diskSim:
         # 生成一个独特的标识符
 
         if self.get_line_of_parent(parent+"/"+name) is not False:
-            print("!!!dir already exists")
+            print("!!!dir already exists:"+parent+"/"+name+". Failed to create dir")
             return False
 
         with open(self.catalogLoc, "r") as catalog:
@@ -127,7 +127,7 @@ class diskSim:
 
             parent_num = self.get_line_of_parent(parent)
             if parent_num is False:
-                print("!!!parent not found")
+                print("!!!parent not found"+parent+". Failed to create dir")
                 return False
 
             inerset_line = self.find_first_empty_table()
@@ -182,7 +182,7 @@ class diskSim:
 
             parent_num = self.get_line_of_parent(parent)
             if parent_num is False:
-                print("!!!parent not found")
+                print("!!!parent not found"+parent+". Failed to write file")
                 return False
 
             # Convert the string from the file into a list object
@@ -262,7 +262,7 @@ class diskSim:
     def delete(self, path):
         target_line = self.get_line_of_parent(path)
         if target_line is False:
-            print("!!!target not found")
+            print("!!!target not found"+path+". Failed to delete")
             return False
 
         with open(self.catalogLoc, "r") as catalog:
@@ -318,7 +318,7 @@ class diskSim:
         # 1. 获取目录行号
         dir_line = self.get_line_of_parent(directory_path)
         if dir_line is False:
-            print("Directory not found")
+            print("Directory not found"+directory_path+". Failed to list")
             return []
 
         # 2. 读取目录信息
@@ -328,7 +328,7 @@ class diskSim:
 
         # 3. 检查是否为目录
         if dir_info[2] != "dir":
-            print("Not a directory")
+            print("Not a directory"+directory_path+". Failed to list")
             return []
 
         # 4. 获取并返回子目录和文件的名称

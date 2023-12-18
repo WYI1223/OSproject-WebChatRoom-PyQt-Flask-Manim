@@ -5,13 +5,17 @@ from flask_login import LoginManager, login_user, login_required, logout_user, c
 from flask_socketio import SocketIO, join_room, leave_room
 from db import get_user, save_user, save_room, add_room_members, get_rooms_for_user, get_room, is_room_member, \
     get_room_members, is_room_admin, update_room, remove_room_members, save_message, get_messages
+from flask_socketio import SocketIO
+#netstat -ano | find "5000"
+##taskkill /F /PID <process_id>
+
 
 app = Flask(__name__)
 app.secret_key = "sfdjkafnk"
 socketio = SocketIO(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
-
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 # 用户加载函数，用于从数据库中加载用户
 @login_manager.user_loader
