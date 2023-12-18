@@ -122,10 +122,22 @@ class memoryScheduler:
             self.table.pop(mid)
             self.memory.delete(mid)
 
-
     def _getstate(self):
-        return "Memory:", self.memory.__str__(), "Vmemory", self.vmemory.getTable(), \
-               "MemoryScheduler:", self.table, self.vmemoryTable
+        return {
+            "Memory": {
+                "Table": self.memory.table,
+                "Catalog": self.memory.cata,
+                "Counter": self.memory.counter,
+                "FreeSpace": self.memory.memSpace
+            },
+            "VirtualMemory": {
+                "Table": self.vmemory.getTable()
+            },
+            "MemoryScheduler": {
+                "Table": self.table,
+                "VMemoryTable": self.vmemoryTable
+            }
+        }
 
 #
 # if __name__ == "__main__":

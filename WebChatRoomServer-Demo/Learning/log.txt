@@ -1,490 +1,63 @@
-RunningInfo: user_id: 82Yu2Ye6punt5kMXAAAE connected.
-RunningInfo: user_id: BCTlOmmlUAwbiMIXAAAD connected.
-RunningInfo: user_id: kIYLJ9PgiYGdj5F2AAAF connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '0:33:49'}
-Message received: {'msg': 'User has connected!', 'timestamp': '0:33:49'}
-Message received: {'msg': 'User has connected!', 'timestamp': '0:33:49'}
-RunningInfo: user_id: kIYLJ9PgiYGdj5F2AAAF disconnected.
-RunningInfo: user_id: BCTlOmmlUAwbiMIXAAAD disconnected.
-RunningInfo: user_id: 82Yu2Ye6punt5kMXAAAE disconnected.
-RunningInfo: user_id: RYjGBIha7k7c4XNJAAAH connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '0:34:7'}
-Message received: {'msg': '123: 123 (sent at 0:34:17)', 'timestamp': '0:34:17'}
-Message received: {'msg': '123123: 123123 (sent at 0:34:19)', 'timestamp': '0:34:19'}
-RunningInfo: user_id: RYjGBIha7k7c4XNJAAAH disconnected.
-RunningInfo: user_id: _7cZWHWHgTgXuVKxAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '0:44:36'}
-Message received: {'msg': '123: 123 (sent at 0:44:45)', 'timestamp': '0:44:45'}
-RunningInfo: user_id: _7cZWHWHgTgXuVKxAAAB disconnected.
-RunningInfo: user_id: tsRWetH5C4fG5g-GAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '0:55:35'}
-RunningInfo: user_id: tsRWetH5C4fG5g-GAAAB disconnected.
-RunningInfo: user_id: qGBRGFqoF_u72rNfAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '0:56:57'}
-Message received: {'msg': '123: 123 (sent at 0:57:1)', 'timestamp': '0:57:1'}
-RunningInfo: user_id: fbq_EKQ1L-cYzEOBAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '0:57:42'}
-RunningInfo: user_id: RPFRJ2AKNeSs1oUuAAAD connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '0:57:43'}
-RunningInfo: user_id: RPFRJ2AKNeSs1oUuAAAD disconnected.
-RunningInfo: user_id: RL-JGgcG_1n7i7fVAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '1:6:6'}
-RunningInfo: user_id: SKbXmFqzfiRAIiOEAAAD connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '1:6:16'}
-RunningInfo: user_id: uDKYFiK0_jr77EcwAAAC connected.
-RunningInfo: user_id: JgWLlJpFhyARrjl9AAAD connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '1:31:50'}
-Message received: {'msg': 'User has connected!', 'timestamp': '1:31:50'}
-Message received: {'msg': '123: 123 (sent at 1:31:58)', 'timestamp': '1:31:58'}
-RunningInfo: user_id: JgWLlJpFhyARrjl9AAAD disconnected.
-RunningInfo: user_id: uZtqT0jmvj2wDHdYAAAF connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '1:32:11'}
-RunningInfo: user_id: uZtqT0jmvj2wDHdYAAAF disconnected.
-RunningInfo: user_id: OUbJz9qq_rBxh57mAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '1:33:33'}
-RunningInfo: user_id: JRSJPCd4kqCaBY3nAAAD connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '1:33:41'}
-RunningInfo: user_id: hkLNBBAmaxhIFbYxAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '1:35:39'}
-RunningInfo: user_id: ltYoyIeYoJpdjfw-AAAD connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '1:35:48'}
-RunningInfo: user_id: ltYoyIeYoJpdjfw-AAAD disconnected.
-Message received: {'msg': '123: 123 (sent at 1:35:56)', 'timestamp': '1:35:56'}
-RunningInfo: user_id: hkLNBBAmaxhIFbYxAAAB disconnected.
-RunningInfo: user_id: wVJF1NMCrwCByC46AAAF connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '1:36:9'}
-Message received: {'msg': '123: 123 (sent at 1:36:13)', 'timestamp': '1:36:13'}
-RunningInfo: user_id: TnUSmsVUx5VfUeG7AAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '1:43:13'}
-RunningInfo: user_id: RRBB_V6p0bcSMLvtAAAD connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '1:43:16'}
-RunningInfo: user_id: RRBB_V6p0bcSMLvtAAAD disconnected.
-RunningInfo: user_id: IBmBRRqbxiGQPqNzAAAC connected.
-RunningInfo: user_id: ms7YpGJhd6sUFsC_AAAD connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '1:45:45'}
-Message received: {'msg': 'User has connected!', 'timestamp': '1:45:45'}
-RunningInfo: user_id: oCUBUp2ouN84icxiAAAC connected.
-RunningInfo: user_id: J5CfQIkcghV2JT7WAAAD connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '1:46:33'}
-Message received: {'msg': 'User has connected!', 'timestamp': '1:46:33'}
-RunningInfo: user_id: SMzMljrnNrBxvZ5KAAAF connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '1:46:33'}
-RunningInfo: user_id: wLGM26DYjeE-C0KqAAAD connected.
-RunningInfo: user_id: 2KKYFc7Ak76WzDwEAAAE connected.
-RunningInfo: user_id: qxUiQd36fnnGbHpBAAAF connected.
-RunningInfo: user_id: EjwBcWFAkQLkuTsUAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '1:51:28'}
-RunningInfo: user_id: VPGzK5J5_xBHuiYrAAAE connected.
-RunningInfo: user_id: baKkyYg4lAOHV44rAAAF connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '1:51:29'}
-Message received: {'msg': 'User has connected!', 'timestamp': '1:51:29'}
-RunningInfo: user_id: Py8BzBepu2XajYKGAAAD connected.
-RunningInfo: user_id: pSJn3MZn7WUO59ecAAAE connected.
-RunningInfo: user_id: x72EPY0zcnswofK6AAAF connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:17:6'}
-Message received: {'msg': 'User has connected!', 'timestamp': '2:17:6'}
-Message received: {'msg': 'User has connected!', 'timestamp': '2:17:6'}
-RunningInfo: user_id: jdD7nFK7dqXNpzCsAAAH connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:17:9'}
-Message received: {'msg': '123: 123 (sent at 2:17:55)', 'timestamp': '2:17:55'}
-RunningInfo: user_id: jdD7nFK7dqXNpzCsAAAH disconnected.
-RunningInfo: user_id: pSJn3MZn7WUO59ecAAAE disconnected.
-RunningInfo: user_id: x72EPY0zcnswofK6AAAF disconnected.
-RunningInfo: user_id: Py8BzBepu2XajYKGAAAD disconnected.
-RunningInfo: user_id: ooTQh2QJtVVE_v2SAAAJ connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:18:23'}
-Message received: {'msg': '123: 123 (sent at 2:18:25)', 'timestamp': '2:18:25'}
-RunningInfo: user_id: Iykg1s1XW3zd9iZ-AAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:18:39'}
-RunningInfo: user_id: bOEW2JPJKdRXXyY_AAAD connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:18:45'}
-RunningInfo: user_id: bOEW2JPJKdRXXyY_AAAD disconnected.
-RunningInfo: user_id: Z9oElrqTXrhhcxMSAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:20:1'}
-RunningInfo: user_id: FWILDZnNofXH7BstAAAD connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:20:3'}
-RunningInfo: user_id: Z9oElrqTXrhhcxMSAAAB disconnected.
-Message received: {'msg': '123: 123 (sent at 2:20:9)', 'timestamp': '2:20:9'}
-RunningInfo: user_id: 4EacxOdIqstjZ6d3AAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:20:58'}
-RunningInfo: user_id: 8nOhXqgDYQtWnsLvAAAD connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:21:2'}
-RunningInfo: user_id: 8nOhXqgDYQtWnsLvAAAD disconnected.
-RunningInfo: user_id: 4EacxOdIqstjZ6d3AAAB disconnected.
-RunningInfo: user_id: G0koRIJZWEcvcNJqAAAF connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:22:40'}
-RunningInfo: user_id: ryoV5hN_T9CGYHZhAAAH connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:24:3'}
-RunningInfo: user_id: G0koRIJZWEcvcNJqAAAF disconnected.
-RunningInfo: user_id: ryoV5hN_T9CGYHZhAAAH disconnected.
-RunningInfo: user_id: 9JGQbO7Yby4BHrusAAAJ connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:24:10'}
-RunningInfo: user_id: 9JGQbO7Yby4BHrusAAAJ disconnected.
-RunningInfo: user_id: -_gp0VrpSjG7r8jyAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:24:23'}
-RunningInfo: user_id: t34areF5aFYkSrL6AAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:25:57'}
-RunningInfo: user_id: E1IcNeLgPw4AJ2z1AAAD connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:25:58'}
-RunningInfo: user_id: E1IcNeLgPw4AJ2z1AAAD disconnected.
-RunningInfo: user_id: 62AJJeZy3v4Sle94AAAF connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:26:16'}
-RunningInfo: user_id: 62AJJeZy3v4Sle94AAAF disconnected.
-RunningInfo: user_id: t34areF5aFYkSrL6AAAB disconnected.
-RunningInfo: user_id: b1XL6MaBMDsf-moVAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:27:40'}
-RunningInfo: user_id: JSFLlzQ7bXHIjlk1AAAD connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:28:6'}
-RunningInfo: user_id: JSFLlzQ7bXHIjlk1AAAD disconnected.
-RunningInfo: user_id: b1XL6MaBMDsf-moVAAAB disconnected.
-RunningInfo: user_id: CQ7rc1G_XG3oV1JEAAAF connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:33:16'}
-RunningInfo: user_id: ApAIwsNWfajGBjl_AAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:36:15'}
-Message received: {'msg': '123: 123 (sent at 2:36:22)', 'timestamp': '2:36:22'}
-Message received: {'msg': '123123: 123 (sent at 2:36:24)', 'timestamp': '2:36:24'}
-Message received: {'msg': '123123: 123 (sent at 2:36:26)', 'timestamp': '2:36:26'}
-Message received: {'msg': '123123: 123 (sent at 2:36:29)', 'timestamp': '2:36:29'}
-Message received: {'msg': '123123: 123 (sent at 2:36:31)', 'timestamp': '2:36:31'}
-Message received: {'msg': '123123: 123 (sent at 2:36:32)', 'timestamp': '2:36:32'}
-Message received: {'msg': '123123: 123 (sent at 2:36:33)', 'timestamp': '2:36:33'}
-Message received: {'msg': '123123: 123 (sent at 2:36:35)', 'timestamp': '2:36:35'}
-Message received: {'msg': '123123: 123 (sent at 2:36:35)', 'timestamp': '2:36:35'}
-RunningInfo: user_id: XAS3by7O6ARH7i9bAAAD connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:41:41'}
-RunningInfo: user_id: ApAIwsNWfajGBjl_AAAB disconnected.
-RunningInfo: user_id: XAS3by7O6ARH7i9bAAAD disconnected.
-RunningInfo: user_id: zuJz57LqA4VDnZMIAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:46:5'}
-Message received: {'msg': '123: 123 (sent at 2:46:8)', 'timestamp': '2:46:8'}
-Message received: {'msg': '123: 123 (sent at 2:46:9)', 'timestamp': '2:46:9'}
-Message received: {'msg': '123: 123 (sent at 2:46:10)', 'timestamp': '2:46:10'}
-Message received: {'msg': '123: 123 (sent at 2:46:11)', 'timestamp': '2:46:11'}
-RunningInfo: user_id: lhPbtGQJO_Ys_CbAAAAD connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:46:23'}
-RunningInfo: user_id: osmkgVsMhppVCOdHAAAC connected.
-RunningInfo: user_id: MLqRIEFPi6aF401qAAAD connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:47:26'}
-Message received: {'msg': 'User has connected!', 'timestamp': '2:47:26'}
-RunningInfo: user_id: j5GRkuNZH591jTmxAAAF connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:47:28'}
-Message received: {'msg': '123: 123 (sent at 2:47:42)', 'timestamp': '2:47:42'}
-RunningInfo: user_id: hq578LAfFR26K8UCAAAH connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:47:53'}
-RunningInfo: user_id: hq578LAfFR26K8UCAAAH disconnected.
-RunningInfo: user_id: B05FVJ7k1UDO1UctAAAJ connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:48:37'}
-RunningInfo: user_id: J-OtqzFZUNGirjINAAAE connected.
-RunningInfo: user_id: IWEVSY0GQReRB3O_AAAF connected.
-RunningInfo: user_id: U4mUwMXnF30123B2AAAG connected.
-RunningInfo: user_id: a69kk7kPGEeCfRdRAAAH connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:48:50'}
-Message received: {'msg': 'User has connected!', 'timestamp': '2:48:50'}
-Message received: {'msg': 'User has connected!', 'timestamp': '2:48:50'}
-Message received: {'msg': 'User has connected!', 'timestamp': '2:48:50'}
-RunningInfo: user_id: J-OtqzFZUNGirjINAAAE disconnected.
-RunningInfo: user_id: a69kk7kPGEeCfRdRAAAH disconnected.
-RunningInfo: user_id: U4mUwMXnF30123B2AAAG disconnected.
-RunningInfo: user_id: 2OD46Avvayf81QePAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:51:37'}
-RunningInfo: user_id: Nq2Pn1TNxzvOWUF0AAAD connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:51:37'}
-RunningInfo: user_id: q_Oh-t0pLefDCrBRAAAF connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:51:45'}
-RunningInfo: user_id: q_Oh-t0pLefDCrBRAAAF disconnected.
-RunningInfo: user_id: Nq2Pn1TNxzvOWUF0AAAD disconnected.
-RunningInfo: user_id: 2OD46Avvayf81QePAAAB disconnected.
-RunningInfo: user_id: ZBvdfsuiUWy2mVZ4AAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:52:26'}
-Message received: {'msg': '123: 123 (sent at 2:52:28)', 'timestamp': '2:52:28'}
-RunningInfo: user_id: JsswdlBPsCq3sID8AAAD connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:52:30'}
-RunningInfo: user_id: FhwRLsQWRtX0e9n3AAAF connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:58:13'}
-RunningInfo: user_id: 2pvvRjs4He9A2Qs_AAAD connected.
-RunningInfo: user_id: o-SdA8aenXfqRMZzAAAE connected.
-RunningInfo: user_id: GRyYFwoXhpXuLS4tAAAF connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:58:35'}
-Message received: {'msg': 'User has connected!', 'timestamp': '2:58:35'}
-Message received: {'msg': 'User has connected!', 'timestamp': '2:58:35'}
-RunningInfo: user_id: QJD6a96-NP90yqDUAAAH connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:58:45'}
-RunningInfo: user_id: QJD6a96-NP90yqDUAAAH disconnected.
-RunningInfo: user_id: BexddrnSv-SHeyHGAAAC connected.
-RunningInfo: user_id: umbLUYVqomfr6wm1AAAD connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:59:58'}
-Message received: {'msg': 'User has connected!', 'timestamp': '2:59:58'}
-RunningInfo: user_id: c8QWfxTOFJjjOXTfAAAF connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '2:59:59'}
-RunningInfo: user_id: BKQINlzdhcxck_R9AAAC connected.
-RunningInfo: user_id: U_8Mu6GF833J-pcrAAAD connected.
-RunningInfo: user_id: ybWQMCKv4M9De_sJAAAF connected.
-RunningInfo: user_id: YP821udVmdnckH7aAAAC connected.
-RunningInfo: user_id: NaNDsm-BJdXh4-qwAAAD connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '3:7:38'}
-Message received: {'msg': 'User has connected!', 'timestamp': '3:7:38'}
-RunningInfo: user_id: qB16OJJ05-qwkXJaAAAF connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '3:7:39'}
-RunningInfo: user_id: qB16OJJ05-qwkXJaAAAF disconnected.
-RunningInfo: user_id: YP821udVmdnckH7aAAAC disconnected.
-RunningInfo: user_id: NaNDsm-BJdXh4-qwAAAD disconnected.
-RunningInfo: user_id: 50Aavorqd-AYAiZuAAAH connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '3:7:47'}
-Message received: {'msg': '123: 123 (sent at 3:7:51)', 'timestamp': '3:7:51'}
-Message received: {'msg': '1213: 23 (sent at 3:7:53)', 'timestamp': '3:7:53'}
-RunningInfo: user_id: yYliUXdErzdOnMr4AAAJ connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '3:8:0'}
-Message received: {'msg': '1213: 213 (sent at 3:10:37)', 'timestamp': '3:10:37'}
-Message received: {'msg': '1213: 123 (sent at 3:10:40)', 'timestamp': '3:10:40'}
-Message received: {'msg': '1213: 123 (sent at 3:10:43)', 'timestamp': '3:10:43'}
-Message received: {'msg': '1213: 123 (sent at 3:10:46)', 'timestamp': '3:10:46'}
-Message received: {'msg': '1213: 123 (sent at 3:10:48)', 'timestamp': '3:10:48'}
-Message received: {'msg': '1213: 234 (sent at 3:10:50)', 'timestamp': '3:10:50'}
-RunningInfo: user_id: zCKCnUtQljCY3rJTAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '3:28:7'}
-RunningInfo: user_id: NnFKBF5WAkpjCGYnAAAD connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '3:28:10'}
-RunningInfo: user_id: Rn3kGX67GkgetiD9AAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '3:43:20'}
-RunningInfo: user_id: G5joRvuPnzeX1UIrAAAD connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '3:43:24'}
-RunningInfo: user_id: LoMzSymFEZuNbTLPAAAC connected.
-RunningInfo: user_id: e8ucg4HPsAfh5t7FAAAD connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '4:27:26'}
-Message received: {'msg': 'User has connected!', 'timestamp': '4:27:26'}
-RunningInfo: user_id: sw49JEJN3_il5ARkAAAF connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '4:27:28'}
-RunningInfo: user_id: sw49JEJN3_il5ARkAAAF disconnected.
-RunningInfo: user_id: yRQkTwHC_A_Mq6ynAAAC connected.
-RunningInfo: user_id: D6cm0H3KuWC43IaVAAAD connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '4:51:6'}
-Message received: {'msg': 'User has connected!', 'timestamp': '4:51:6'}
-RunningInfo: user_id: KkFwBM4uSfifuh-jAAAF connected.
-RunningInfo: user_id: ksIEfjfyQ4VXtZinAAAH connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '4:51:31'}
-RunningInfo: user_id: KkFwBM4uSfifuh-jAAAF disconnected.
-RunningInfo: user_id: 0RX73-3vuKNHoUOpAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '4:55:50'}
-RunningInfo: user_id: 61U8jdR-wUIEeGCPAAAE connected.
-RunningInfo: user_id: _qMDQpG5IaA_1o63AAAF connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '4:55:55'}
-Message received: {'msg': 'User has connected!', 'timestamp': '4:55:55'}
-RunningInfo: user_id: 0RX73-3vuKNHoUOpAAAB disconnected.
-RunningInfo: user_id: _qMDQpG5IaA_1o63AAAF disconnected.
-RunningInfo: user_id: boXXY_drwbZGGyxSAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '4:56:53'}
-RunningInfo: user_id: boXXY_drwbZGGyxSAAAB disconnected.
-RunningInfo: user_id: 6qUQg5w8Xzkod7-SAAAD connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '4:57:4'}
-RunningInfo: user_id: 8ujjPxEJU1FI0w-OAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '4:57:41'}
-RunningInfo: user_id: J6L3VPO47tI4kgD2AAAD connected.
-Message received: 123
+RunningInfo: user_id: VMK36MKA5iOJieHpAAAB connected.
+Message received: {'msg': 'User has connected!', 'timestamp': '12:3:15'}
+RunningInfo: user_id: 2wTbet6ptUICyMrEAAAD connected.
+RunningInfo: user_id: 2wTbet6ptUICyMrEAAAD connected.
+Message received: {'msg': '1231: 23123 (sent at 12:3:49)', 'timestamp': '12:3:49'}
 Message received: 123123
-RunningInfo: user_id: J6L3VPO47tI4kgD2AAAD disconnected.
-RunningInfo: user_id: RV9NsO-zSvAsAHcxAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '4:58:52'}
-RunningInfo: user_id: v8ibrV3xcVvMSsh5AAAD connected.
-Message received: 123123
-RunningInfo: user_id: v8ibrV3xcVvMSsh5AAAD disconnected.
-RunningInfo: user_id: ytPvDa2OmARjT8qcAAAB connected.
-RunningInfo: user_id: ytPvDa2OmARjT8qcAAAB disconnected.
-RunningInfo: user_id: krWO6iUDjozdpQSoAAAD connected.
-RunningInfo: user_id: krWO6iUDjozdpQSoAAAD disconnected.
-RunningInfo: user_id: p1-mCz7F6CyzKxNBAAAB connected.
-RunningInfo: user_id: p1-mCz7F6CyzKxNBAAAB disconnected.
-RunningInfo: user_id: hiMbqnUjgGvFHfjPAAAD connected.
-RunningInfo: user_id: hiMbqnUjgGvFHfjPAAAD disconnected.
-RunningInfo: user_id: Wh9CL1NfgbyM5tZvAAAF connected.
-RunningInfo: user_id: Wh9CL1NfgbyM5tZvAAAF disconnected.
-RunningInfo: user_id: U2Yb6HUkznvrkrFaAAAH connected.
-RunningInfo: user_id: zSmCV5vNRHLnYgpIAAAJ connected.
-RunningInfo: user_id: zIV6SOe66_gR58WuAAAL connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '12:53:45'}
-RunningInfo: user_id: U2Yb6HUkznvrkrFaAAAH disconnected.
-RunningInfo: user_id: zSmCV5vNRHLnYgpIAAAJ disconnected.
-RunningInfo: user_id: Rnug0nIyhDD531QTAAAN connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '12:54:37'}
-RunningInfo: user_id: pfo8aSKOEncak_4UAAAP connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '12:54:40'}
-RunningInfo: user_id: ghajt3sNwYRcT93CAAAR connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '12:54:57'}
-RunningInfo: user_id: kClO5IDyAUmkMWK6AAAT connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '12:55:2'}
-RunningInfo: user_id: zIV6SOe66_gR58WuAAAL disconnected.
-RunningInfo: user_id: Rnug0nIyhDD531QTAAAN disconnected.
-RunningInfo: user_id: pfo8aSKOEncak_4UAAAP disconnected.
-RunningInfo: user_id: ghajt3sNwYRcT93CAAAR disconnected.
-RunningInfo: user_id: jwAPkDmlDXVTeXOFAAAV connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '12:56:19'}
-RunningInfo: user_id: kClO5IDyAUmkMWK6AAAT disconnected.
-RunningInfo: user_id: Et6FQ60o_E6r1q6UAAAX connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '12:57:55'}
-Message received: {'msg': '123: 123 (sent at 12:57:59)', 'timestamp': '12:57:59'}
-Message received: {'msg': '123:  (sent at 12:57:59)', 'timestamp': '12:57:59'}
-RunningInfo: user_id: BKfDWbKpbSL6-woVAAAZ connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '12:58:4'}
-RunningInfo: user_id: jwAPkDmlDXVTeXOFAAAV disconnected.
-RunningInfo: user_id: Et6FQ60o_E6r1q6UAAAX disconnected.
-RunningInfo: user_id: BKfDWbKpbSL6-woVAAAZ disconnected.
-RunningInfo: user_id: qcXDcv42qgqXUBkvAAAB disconnected.
-Message received: {'msg': 'User has connected!', 'timestamp': '14:25:39'}
-Message received: {'msg': '123: 123 (sent at 14:25:51)', 'timestamp': '14:25:51'}
-Message received: {'msg': 'User has connected!', 'timestamp': '14:26:30'}
-RunningInfo: user_id: -beb8Jo3ahidRwRdAAAB disconnected.
-Message received: {'msg': 'User has connected!', 'timestamp': '14:26:36'}
-Message received: {'msg': 'User has connected!', 'timestamp': '14:27:51'}
-RunningInfo: user_id: EbxcKZKPktRh69jCAAAD disconnected.
-Message received: {'msg': 'User has connected!', 'timestamp': '14:29:22'}
-RunningInfo: user_id: z4M2rkNf4suynklpAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '14:30:24'}
-RunningInfo: user_id: 9XARcgKsA7DTmIH-AAAD connected.
+RunningInfo: user_id: -lhelcEjIxjtDw9qAAAF connected.
+RunningInfo: user_id: -lhelcEjIxjtDw9qAAAF connected.
 Message received: 123
-RunningInfo: user_id: 9XARcgKsA7DTmIH-AAAD connected.
-RunningInfo: user_id: 9XARcgKsA7DTmIH-AAAD connected.
-RunningInfo: user_id: 9XARcgKsA7DTmIH-AAAD connected.
-RunningInfo: user_id: KEVjrLbFz-QitWeoAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '14:33:2'}
-RunningInfo: user_id: JX1WoMkXTf-DeUbjAAAD connected.
-RunningInfo: user_id: JX1WoMkXTf-DeUbjAAAD disconnected.
-RunningInfo: user_id: QsqIrBjlUJMe_qhqAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '14:39:23'}
-RunningInfo: user_id: UD3EOKQ02oG6OcX7AAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '14:42:20'}
-RunningInfo: user_id: VukwkU5wKGNvzoFgAAAD connected.
-RunningInfo: user_id: VukwkU5wKGNvzoFgAAAD disconnected.
-RunningInfo: user_id: sJxLsoYY4rK2q5QyAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '14:43:35'}
-RunningInfo: user_id: yPYTVIPjPFQGQRubAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '14:44:18'}
-RunningInfo: user_id: Jrz7uYl-VVVjhJ-_AAAD connected.
-RunningInfo: user_id: Jrz7uYl-VVVjhJ-_AAAD disconnected.
-RunningInfo: user_id: I_tZ7tV9kUzy14KIAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '14:45:40'}
-RunningInfo: user_id: 2Ta-i14ofkEG3HNpAAAD connected.
-RunningInfo: user_id: 2Ta-i14ofkEG3HNpAAAD disconnected.
-RunningInfo: user_id: pQXF7z0PunhFrT0QAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '14:46:8'}
-RunningInfo: user_id: 96lkqyXqYha8haspAAAD connected.
-RunningInfo: user_id: 96lkqyXqYha8haspAAAD disconnected.
-RunningInfo: user_id: XhuWovoUHxD1NS2mAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '14:56:57'}
-RunningInfo: user_id: zeT9uDwqdTrDvqWvAAAD connected.
-RunningInfo: user_id: zeT9uDwqdTrDvqWvAAAD disconnected.
-RunningInfo: user_id: ol9INDJCRyKfieEyAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '14:57:23'}
-RunningInfo: user_id: G40THlCrzblAn9CsAAAD connected.
-RunningInfo: user_id: G40THlCrzblAn9CsAAAD connected.
-RunningInfo: user_id: G40THlCrzblAn9CsAAAD connected.
-RunningInfo: user_id: G40THlCrzblAn9CsAAAD connected.
-RunningInfo: user_id: G40THlCrzblAn9CsAAAD connected.
-RunningInfo: user_id: G40THlCrzblAn9CsAAAD connected.
-RunningInfo: user_id: G40THlCrzblAn9CsAAAD connected.
-RunningInfo: user_id: G40THlCrzblAn9CsAAAD connected.
-RunningInfo: user_id: G40THlCrzblAn9CsAAAD connected.
-RunningInfo: user_id: G40THlCrzblAn9CsAAAD disconnected.
-RunningInfo: user_id: slvqlLe0No5QPcORAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '14:58:54'}
-RunningInfo: user_id: ejkhfc4M2MeUQEMuAAAD connected.
-RunningInfo: user_id: ejkhfc4M2MeUQEMuAAAD connected.
-RunningInfo: user_id: ejkhfc4M2MeUQEMuAAAD connected.
-RunningInfo: user_id: ejkhfc4M2MeUQEMuAAAD connected.
-RunningInfo: user_id: ejkhfc4M2MeUQEMuAAAD connected.
-RunningInfo: user_id: ejkhfc4M2MeUQEMuAAAD disconnected.
-RunningInfo: user_id: oBeWv74C2Cl9-ZS1AAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '15:1:54'}
-RunningInfo: user_id: WzW9JFtRURI3J71lAAAD connected.
-RunningInfo: user_id: 5n_u4UuHMVpFhr8yAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '15:4:36'}
-RunningInfo: user_id: BmwVcdkVk4AbL--RAAAD connected.
-RunningInfo: user_id: BmwVcdkVk4AbL--RAAAD disconnected.
-RunningInfo: user_id: lbElWQN_RlBp6XjmAAAF connected.
-RunningInfo: user_id: 5n_u4UuHMVpFhr8yAAAB disconnected.
-RunningInfo: user_id: rYEcD6Y9R4p9aKHTAAAH connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '15:5:17'}
-RunningInfo: user_id: lbElWQN_RlBp6XjmAAAF disconnected.
-RunningInfo: user_id: G146rc77aSOYhH72AAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '15:6:18'}
-RunningInfo: user_id: 2Z34USBs1KWdI5v9AAAD connected.
-RunningInfo: user_id: ZkOQsc_lS_u1fUc1AAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '15:9:15'}
-RunningInfo: user_id: J_ZtTKUiD7K5rKv_AAAE connected.
-RunningInfo: user_id: jf0zfvLbCzOCG6mOAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '15:10:58'}
-RunningInfo: user_id: VrIrCil_1ohf2ExCAAAE connected.
-RunningInfo: user_id: 1kK0tGoNYRkbBf8LAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '15:12:2'}
-RunningInfo: user_id: Lfyvu2-f8qHEQPuTAAAD connected.
-RunningInfo: user_id: Lfyvu2-f8qHEQPuTAAAD disconnected.
-RunningInfo: user_id: _O32ZYcgkszfyGUlAAAF connected.
-RunningInfo: user_id: WStKXUIaNNfQDizZAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '15:13:25'}
-RunningInfo: user_id: c-S93-QZCzIqUOO7AAAD connected.
-RunningInfo: user_id: c-S93-QZCzIqUOO7AAAD disconnected.
-RunningInfo: user_id: _fKekAWkc4wjpP-EAAAF connected.
-RunningInfo: user_id: _fKekAWkc4wjpP-EAAAF connected.
-RunningInfo: user_id: 2c1mUpXeku8H7e_sAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '15:14:56'}
-RunningInfo: user_id: 8ymA5hkRW9ljdRHmAAAD connected.
-RunningInfo: user_id: 8ymA5hkRW9ljdRHmAAAD disconnected.
-RunningInfo: user_id: hd1hK_zuU3IXWhBpAAAF connected.
-RunningInfo: user_id: hd1hK_zuU3IXWhBpAAAF disconnected.
-RunningInfo: user_id: VSqHQhs7KcfIPEm0AAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '15:15:57'}
-RunningInfo: user_id: 0AH3oIDLjUGiGTYMAAAD connected.
-RunningInfo: user_id: 0AH3oIDLjUGiGTYMAAAD connected.
-RunningInfo: user_id: 0AH3oIDLjUGiGTYMAAAD disconnected.
-RunningInfo: user_id: NIjitXhXntewlTHlAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '15:17:27'}
-RunningInfo: user_id: fs1zGBStO26ia-gDAAAD connected.
-RunningInfo: user_id: fs1zGBStO26ia-gDAAAD connected.
-RunningInfo: user_id: fs1zGBStO26ia-gDAAAD disconnected.
-RunningInfo: user_id: dcWv4EBJjArPqDV3AAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '15:18:2'}
-RunningInfo: user_id: oVuQA7GheXgYO6sgAAAD connected.
-RunningInfo: user_id: oVuQA7GheXgYO6sgAAAD connected.
-RunningInfo: user_id: oVuQA7GheXgYO6sgAAAD disconnected.
-RunningInfo: user_id: c24JXgTKD3C2A0UvAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '15:18:53'}
-RunningInfo: user_id: LptbyO-7fBF4Arw0AAAD connected.
-RunningInfo: user_id: LptbyO-7fBF4Arw0AAAD connected.
-RunningInfo: user_id: LptbyO-7fBF4Arw0AAAD disconnected.
-RunningInfo: user_id: mjtQUJaOIkplzaEBAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '15:19:23'}
-RunningInfo: user_id: pqWgO0e0m0HR9Zv6AAAD connected.
-RunningInfo: user_id: pqWgO0e0m0HR9Zv6AAAD connected.
-RunningInfo: user_id: pqWgO0e0m0HR9Zv6AAAD connected.
-RunningInfo: user_id: pqWgO0e0m0HR9Zv6AAAD connected.
-RunningInfo: user_id: pqWgO0e0m0HR9Zv6AAAD disconnected.
-RunningInfo: user_id: Ps_6g_Wo1I79dxOpAAAD disconnected.
-RunningInfo: user_id: HsT3nid5JW-ugrrhAAAD disconnected.
-RunningInfo: user_id: sdiiDLPfCpQ8Mdy8AAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '15:24:45'}
-RunningInfo: user_id: J8UtTw464gnBbLEhAAAD connected.
-RunningInfo: user_id: qgK7zMN9ixwT7qMyAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '15:28:7'}
-RunningInfo: user_id: CAX6j05CI3oLvi_GAAAD connected.
-RunningInfo: user_id: CAX6j05CI3oLvi_GAAAD disconnected.
-RunningInfo: user_id: 7JD_-KixlxPwH2gOAAAF connected.
-RunningInfo: user_id: S6fz680-Zcl3vr9xAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '15:28:59'}
-RunningInfo: user_id: c9ecxtL3kMvDipk2AAAE connected.
-RunningInfo: user_id: YEd0x5VcxqHk9MQqAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '15:33:36'}
-RunningInfo: user_id: j5BLE9jFsN3vsDkSAAAE connected.
-RunningInfo: user_id: WxFEF4Clmm97OWeOAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '15:35:9'}
-RunningInfo: user_id: ZMNmIkEb-fI3gPz6AAAE connected.
-RunningInfo: user_id: zfdD7UFvW_TGXfA5AAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '15:39:31'}
-RunningInfo: user_id: GsOedHDnd62BiI4lAAAD connected.
-RunningInfo: user_id: emnGpLN5_7RZCFsrAAAE disconnected.
-RunningInfo: user_id: c2-6P9R96L1ZlzWiAAAB connected.
-Message received: {'msg': 'User has connected!', 'timestamp': '15:50:54'}
-RunningInfo: user_id: 6Zq0UpefzCcrfBLiAAAD connected.
-RunningInfo: user_id: 6Zq0UpefzCcrfBLiAAAD connected.
-RunningInfo: user_id: c2-6P9R96L1ZlzWiAAAB disconnected.
-RunningInfo: user_id: S3tb_FmzzEQBZkRxAAAC disconnected.
-RunningInfo: user_id: oKE0tFQIVGKWDEnoAAAB disconnected.
-RunningInfo: user_id: Boe7zxYkPXHeK19yAAAB connected.
-RunningInfo: user_id: Boe7zxYkPXHeK19yAAAB disconnected.
+RunningInfo: user_id: TGwghLOkLU7tPY4BAAAB connected.
+Message received: {'msg': 'User has connected!', 'timestamp': '12:23:31'}
+RunningInfo: user_id: svcAGFQiAD5JaxuzAAAD connected.
+RunningInfo: user_id: 908A7laVt1O1OlMIAAAB connected.
+Message received: {'msg': 'User has connected!', 'timestamp': '12:56:27'}
+RunningInfo: user_id: rstIuejnsJsBAtArAAAD connected.
+RunningInfo: user_id: 908A7laVt1O1OlMIAAAB disconnected.
+RunningInfo: user_id: b_SgV6-Q9-iLxjr4AAAF connected.
+Message received: {'msg': 'User has connected!', 'timestamp': '12:56:35'}
+RunningInfo: user_id: b_SgV6-Q9-iLxjr4AAAF disconnected.
+RunningInfo: user_id: pPY1J_o9Pa5QtstuAAAH connected.
+Message received: {'msg': 'User has connected!', 'timestamp': '12:56:36'}
+RunningInfo: user_id: pPY1J_o9Pa5QtstuAAAH disconnected.
+RunningInfo: user_id: L-99skDHFRDXeI8AAAAJ connected.
+Message received: {'msg': 'User has connected!', 'timestamp': '12:56:37'}
+RunningInfo: user_id: L-99skDHFRDXeI8AAAAJ disconnected.
+RunningInfo: user_id: VAau9ackbBHY2pCXAAAL connected.
+Message received: {'msg': 'User has connected!', 'timestamp': '12:56:37'}
+RunningInfo: user_id: VAau9ackbBHY2pCXAAAL disconnected.
+RunningInfo: user_id: PbGdXIZrYeo7eKgAAAAN connected.
+Message received: {'msg': 'User has connected!', 'timestamp': '12:56:37'}
+RunningInfo: user_id: PbGdXIZrYeo7eKgAAAAN disconnected.
+RunningInfo: user_id: LlFt05unE-zMsbl7AAAP connected.
+Message received: {'msg': 'User has connected!', 'timestamp': '12:56:38'}
+RunningInfo: user_id: LlFt05unE-zMsbl7AAAP disconnected.
+RunningInfo: user_id: 45VQPQoF80ym_MSEAAAR connected.
+Message received: {'msg': 'User has connected!', 'timestamp': '12:56:38'}
+RunningInfo: user_id: 45VQPQoF80ym_MSEAAAR disconnected.
+RunningInfo: user_id: pnj8EEdux5WuA-X-AAAT connected.
+Message received: {'msg': 'User has connected!', 'timestamp': '12:56:39'}
+RunningInfo: user_id: pnj8EEdux5WuA-X-AAAT disconnected.
+RunningInfo: user_id: 2B4Pq-RUeUpZZKV2AAAV connected.
+Message received: {'msg': 'User has connected!', 'timestamp': '12:56:39'}
+RunningInfo: user_id: 2B4Pq-RUeUpZZKV2AAAV disconnected.
+RunningInfo: user_id: l3aze2yt6boUIAbWAAAX connected.
+Message received: {'msg': 'User has connected!', 'timestamp': '12:56:40'}
+RunningInfo: user_id: l3aze2yt6boUIAbWAAAX disconnected.
+RunningInfo: user_id: h_s5c722m-qV7VTGAAAZ connected.
+Message received: {'msg': 'User has connected!', 'timestamp': '12:56:40'}
+RunningInfo: user_id: h_s5c722m-qV7VTGAAAZ disconnected.
+RunningInfo: user_id: aVfnerjPSWpZEAafAAAb connected.
+Message received: {'msg': 'User has connected!', 'timestamp': '12:56:40'}
+RunningInfo: user_id: aVfnerjPSWpZEAafAAAb disconnected.
+RunningInfo: user_id: Hg6pfLdEZPdtemHnAAAd connected.
+Message received: {'msg': 'User has connected!', 'timestamp': '12:56:44'}
+RunningInfo: user_id: Hg6pfLdEZPdtemHnAAAd disconnected.
+RunningInfo: user_id: IA1DhZ1ncJIssZrWAAAf connected.
+Message received: {'msg': 'User has connected!', 'timestamp': '12:56:44'}
+RunningInfo: user_id: IA1DhZ1ncJIssZrWAAAf disconnected.
+RunningInfo: user_id: 1QcX_lUXZuGKFsS5AAAh connected.
+Message received: {'msg': 'User has connected!', 'timestamp': '12:56:45'}
+RunningInfo: user_id: 1QcX_lUXZuGKFsS5AAAh disconnected.
+RunningInfo: user_id: yNveE1VIMZRjM-IPAAAj connected.
+Message received: {'msg': 'User has connected!', 'timestamp': '12:56:46'}
