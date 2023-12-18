@@ -123,3 +123,6 @@ RunningInfo: user_id: 41EvtUVq0rd_0GAgAAAD disconnected.
 RunningInfo: user_id: gQHpxRgW04heOxDBAAAB connected.
 Message received: {'msg': 'User has connected!', 'timestamp': '15:46:19'}
 Message received: {'msg': '123123: 123 (sent at 15:46:34)', 'timestamp': '15:46:34'}
+RunningInfo: user_id: 8yhUNtKnR4JdBL5bAAAB connected.
+Message received: {'msg': 'User has connected!', 'timestamp': '16:9:35'}
+RunningInfo: user_id: HQMq4BxAYyQTT9xpAAAD connected.
