@@ -3,35 +3,36 @@ import ast
 
 # DiskSim = DiskSim(硬盘名称)
 # DiskSim.initialize_system_enhanced() # 初始化磁盘
-# DiskSim.write_file_with_identifier(文件名, 文件内容, 父目录, 文件类型) # 写入文件
-# DiskSim.create_dir(文件名, 父目录, 文件类型) # 创建目录
+# DiskSim.write_file(文件名, 文件内容, 父目录, 文件类型) # 写入文件
+# DiskSim._mkdir(文件名, 父目录, 文件类型) # 创建目录
 # DiskSim.read_file(文件路径) # 读取文件
 # DiskSim.delete(文件路径) # 删除文件
 # DiskSim.free_space() # 返回磁盘剩余空间
+# DiskSim._ls(目录路径) # 返回目录下的文件名
 
-
-class DiskSim:
+class diskSim:
 
 
     def __init__(self, location):
         self.location = location
         self.unique_id = 1
+        self.diskLoc = self.location + "\\Disk"
+        self.catalogLoc = self.location + "\\catalog"
+        self.tableLoc = self.location + "\\Table"
+        self.bootLoc = self.location + "\\Boot"
         if not os.path.exists(self.location):
             os.makedirs(self.location)
             self.initialize_system_enhanced()
             self.freeSpace = 1024
         else:
-            with open(self.location + "\\Boot.txt", "r") as boot:
+            with open(self.location + "\\Boot", "r") as boot:
                 self.freeSpace = int(boot.read())
-        self.diskLoc = self.location + "\\Disk.txt"
-        self.catalogLoc = self.location + "\\catalog.txt"
-        self.tableLoc = self.location + "\\Table.txt"
-        self.bootLoc = self.location + "\\Boot.txt"
+
 
     def initialize_system_enhanced(self):
         # 初始化 Table, Disk, catalog 文件
-        with open(self.tableLoc, "w") as table, open(self.diskLoc, "w") as disk, open(
-                self.catalogLoc, "w") as catalog, open(self.bootLoc, "w") as boot:
+        with open(self.tableLoc, "w+") as table, open(self.diskLoc, "w+") as disk, open(
+                self.catalogLoc, "w+") as catalog, open(self.bootLoc, "w+") as boot:
             # 初始化 Boot， 用于记录磁盘的状态
             boot.write("1024")
             self.freeSpace = 1024
@@ -113,9 +114,12 @@ class DiskSim:
         else:
             print(f"Index {index} is out of range for the file.")
 
-    def create_dir(self, name, parent="root", file_type="dir"):
+    def _mkdir(self, name, parent="root", file_type="dir"):
         # 生成一个独特的标识符
 
+        if self.get_line_of_parent(parent+"/"+name) is not False:
+            print("!!!dir already exists:"+parent+"/"+name+". Failed to create dir")
+            return False
 
         with open(self.catalogLoc, "r") as catalog:
             catalog.seek(0)
@@ -123,7 +127,7 @@ class DiskSim:
 
             parent_num = self.get_line_of_parent(parent)
             if parent_num is False:
-                print("!!!parent not found")
+                print("!!!parent not found"+parent+". Failed to create dir")
                 return False
 
             inerset_line = self.find_first_empty_table()
@@ -145,17 +149,18 @@ class DiskSim:
             # catalog.writelines(lines)
         return True
 
-    def write_file_with_identifier(self, name, data, parent="root", file_type="file"):
+    def write_file(self, name, data, parent="root", file_type="file"):
         # 生成一个独特的标识符
 
         with open(self.tableLoc, "r") as table:
             blocks = table.readlines()
 
         insert_line = self.find_first_empty_table()
-
+        size = len(str(data))
+        data = str(data)
         w2b = []
         free_blocks = 0
-        required_blocks = len(data) // 1024 + (1 if len(data) % 1024 > 0 else 0)
+        required_blocks = size // 1024 + (1 if size % 1024 > 0 else 0)
 
         if required_blocks > self.freeSpace:
             return False
@@ -177,7 +182,7 @@ class DiskSim:
 
             parent_num = self.get_line_of_parent(parent)
             if parent_num is False:
-                print("!!!parent not found")
+                print("!!!parent not found"+parent+". Failed to write file")
                 return False
 
             # Convert the string from the file into a list object
@@ -190,7 +195,7 @@ class DiskSim:
 
             # Prepare new entry as a string
             first_block = w2b[0] if len(w2b) > 0 else 0
-            new_entry = str([self.unique_id, name, file_type, parent_num, [], first_block, len(data)]) + "\n"
+            new_entry = str([self.unique_id, name, file_type, parent_num, [], first_block, size]) + "\n"
             self.unique_id += 1
             self.replace_line_by_index(self.catalogLoc, insert_line, new_entry)
 
@@ -224,6 +229,9 @@ class DiskSim:
             return False
         with open(self.catalogLoc, "r") as catalog:
             lines = catalog.readlines()
+
+            # print("!!!!!target",type(target),target)
+
             AimCatalog = eval(lines[target])
         if AimCatalog[2] == "dir":
             # 返回目录下的文件名
@@ -251,11 +259,10 @@ class DiskSim:
                     return data
 
 
-
     def delete(self, path):
         target_line = self.get_line_of_parent(path)
         if target_line is False:
-            print("!!!target not found")
+            print("!!!target not found"+path+". Failed to delete")
             return False
 
         with open(self.catalogLoc, "r") as catalog:
@@ -307,31 +314,27 @@ class DiskSim:
             boot.write(str(self.freeSpace))
 
 
+    def _ls(self, directory_path):
+        # 1. 获取目录行号
+        dir_line = self.get_line_of_parent(directory_path)
+        if dir_line is False:
+            print("Directory not found"+directory_path+". Failed to list")
+            return []
 
+        # 2. 读取目录信息
+        with open(self.catalogLoc, "r") as catalog:
+            lines = catalog.readlines()
+        dir_info = eval(lines[dir_line])
 
-# Usage example
+        # 3. 检查是否为目录
+        if dir_info[2] != "dir":
+            print("Not a directory"+directory_path+". Failed to list")
+            return []
 
-diskSim = DiskSim("Test")
-diskSim.initialize_system_enhanced()
-diskSim.write_file_with_identifier("test", "test", "root/test", "file")
-diskSim.create_dir("test", "root", "dir")
-diskSim.write_file_with_identifier("test", "test", "root/test", "file")
-diskSim.create_dir("largefolder", "root", "dir")
-diskSim.create_dir("largefolder2", "root/largefolder", "dir")
-diskSim.write_file_with_identifier("test", 'A' * 3000, "root/largefolder/largefolder2", "file")
-diskSim.write_file_with_identifier("test", 'A' * 3000, "root/largefolder", "file")
-diskSim.create_dir("largefolder1", "root", "dir")
-diskSim.delete("root/largefolder")
-diskSim.write_file_with_identifier("test1", "test1", "root/test", "file")
-diskSim.create_dir("test", "root", "dir")
-diskSim.write_file_with_identifier("test2", "test2", "root/test", "file")
-diskSim.create_dir("largefolder", "root", "dir")
-diskSim.create_dir("largefolder2", "root/largefolder", "dir")
-diskSim.write_file_with_identifier("test", 'A' * 3000, "root/largefolder/largefolder2", "file")
-diskSim.write_file_with_identifier("test", 'A' * 3000, "root/largefolder", "file")
-diskSim.create_dir("largefolder1", "root", "dir")
-diskSim.delete("root/largefolder")
-print(diskSim.read_file("root/test"))
-print(diskSim.read_file("root/test1"))
-print(diskSim.read_file("root/test/test2"))
-print(diskSim.read_file("root/largefolder1"))
+        # 4. 获取并返回子目录和文件的名称
+        child_items = []
+        for child_line in dir_info[4]:
+            child_info = eval(lines[child_line])
+            child_items.append((child_info[1], child_info[2]))  # (name, type)
+
+        return child_items

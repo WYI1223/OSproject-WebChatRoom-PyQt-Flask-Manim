@@ -1,4 +1,4 @@
-import diskSim
+from Memory import diskSim
 
 
 # 简易文件读取系统

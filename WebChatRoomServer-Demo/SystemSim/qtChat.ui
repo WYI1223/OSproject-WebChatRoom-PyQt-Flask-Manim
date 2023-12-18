@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
@@ -27,7 +28,7 @@
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <widget class="QPushButton" name="pushButton_6">
+      <widget class="QPushButton" name="send_button">
        <property name="geometry">
         <rect>
          <x>1230</x>
@@ -53,7 +54,7 @@ QPushButton:hover {
         <string>Send</string>
        </property>
       </widget>
-      <widget class="QTextEdit" name="textEdit">
+      <widget class="QTextEdit" name="message_input">
        <property name="geometry">
         <rect>
          <x>510</x>
@@ -70,7 +71,7 @@ QPushButton:hover {
 }</string>
        </property>
       </widget>
-      <widget class="QListWidget" name="listWidget">
+      <widget class="QListWidget" name="message_recv">
        <property name="geometry">
         <rect>
          <x>510</x>
@@ -107,7 +108,7 @@ QListWidget::item:selected {
        </property>
        <layout class="QVBoxLayout" name="verticalLayout"/>
       </widget>
-      <widget class="QTextEdit" name="textEdit_2">
+      <widget class="QTextEdit" name="username_input">
        <property name="geometry">
         <rect>
          <x>20</x>
@@ -146,7 +147,7 @@ QListWidget::item:selected {
         <string>TextLabel</string>
        </property>
       </widget>
-      <widget class="QTextEdit" name="textEdit_3">
+      <widget class="QTextEdit" name="password_input">
        <property name="geometry">
         <rect>
          <x>20</x>
@@ -166,7 +167,7 @@ QListWidget::item:selected {
         <string>Passowrd</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="pushButton_7">
+      <widget class="QPushButton" name="login_button">
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -192,7 +193,7 @@ QPushButton:hover {
         <string>LogIn</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="pushButton_8">
+      <widget class="QPushButton" name="singup_button">
        <property name="geometry">
         <rect>
          <x>250</x>
@@ -243,7 +244,7 @@ background:rgb(188, 188, 188);
      <x>0</x>
      <y>0</y>
      <width>1528</width>
-     <height>30</height>
+     <height>23</height>
     </rect>
    </property>
   </widget>
