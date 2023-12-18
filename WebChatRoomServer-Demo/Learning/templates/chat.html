@@ -48,8 +48,19 @@
         });
         socket.on('memory_info', function(memoryInfo) {
             // 处理接收到的内存信息
-            $('#memory-info').text(memoryInfo);
+            // 清空现有的内存信息列表
+            $('#memory-info').empty();
+            // 添加每个内存的信息
+            Object.keys(memoryInfo).forEach(function(memoryType) {
+                var memoryTypeData = memoryInfo[memoryType];
+                var memoryInfoStr = `${memoryType}:\n`;
+                Object.keys(memoryTypeData).forEach(function(infoKey) {
+                    memoryInfoStr += `${infoKey}: ${JSON.stringify(memoryTypeData[infoKey])}\n`;
+                });
+            $('#memory-info').append($('<li>').text(memoryInfoStr));
+            });
         });
+
 
         function sendMessage() {
             var message = $('#message').val();
