@@ -1,4 +1,7 @@
+import queue
+import threading
 import time
+import json
 
 from Memory import diskSim
 
@@ -11,33 +14,50 @@ class logSystem:
         self.disk._mkdir("log", "root/"+serverName)
         self.logloc = "root/"+serverName+"/log"
         self.num = self.disk.read_file(self.logloc+"/num")
-        if self.num == False:
-            self.num = 0
-            self.disk.wrtie_file("num",0,self.logloc)
-        else:
-            self.num = int(self.num)
+
+        self.mutex = threading.Lock()
+        self.log_condition = threading.Condition(self.mutex)
+        self.log = queue.LifoQueue()
+        self.save_log()
+
+
+    def save_log(self):
+        log_thread = threading.Thread(target=self.save_log_queue,name="save_log",daemon=True)
+        log_thread.start()
+
+    def save_log_queue(self):
+        while True:
+            with self.log_condition:
+                self.log_condition.wait()
+                while not self.log.empty():
+                    log = self.log.get()
+
+                    # 尝试读取旧的日志文件
+                    old_log_content = self.disk.read_file(self.logloc + "/log")
+                    if old_log_content:
+                        try:
+                            # 尝试将读取的内容解析为JSON格式的列表
+                            old_log = json.loads(old_log_content)
+                        except json.JSONDecodeError:
+                            # 如果解析失败，就将old_log设置为空列表
+                            print("Error: logSystem.save_log_queue: JSONDecodeError")
+                            old_log = []
+                    else:
+                        old_log = []
+
+                    # 将新日志添加到列表中
+                    old_log.append(log)
+
+                    # 将更新后的日志列表保存到文件中
+                    self.disk.delete(self.logloc + "/log")
+                    self.disk.write_file("log", json.dumps(old_log), self.logloc)
 
 
     def put(self, log):
-        # DiskSim.write_file(文件名, 文件内容, 父目录, 文件类型) # 写入文件
-        self.num += 1
-        self.disk.wrtie_file(time.get_clock_info(), log, self.logloc)
-        self.disk.wrtie_file("num",self.num,self.logloc)
+        with self.mutex:
+            self.log.put(log)
+            self.log_condition.notify()
+
 
     def get(self):
-        log_list = self.disk._ls(self.logloc)
-        log = []
-        for i in log_list:
-            log.append(self.disk.read_file(self.logloc+"/"+i))
-        return log
-
-    def clear(self):
-        self.disk.delete(self.logloc)
-        self.disk._mkdir("log", "root/"+self.serverName)
-        self.logloc = "root/"+self.serverName+"/log"
-        self.num = self.disk.read_file(self.logloc+"/num")
-        if self.num == False:
-            self.num = 0
-            self.disk.wrtie_file("num",0,self.logloc)
-        else:
-            self.num = int(self.num)
+        return json.loads(self.disk.read_file(self.logloc+"/log"))

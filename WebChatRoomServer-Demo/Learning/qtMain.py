@@ -31,6 +31,7 @@ class myChat(QMainWindow, Ui_MainWindow):
         self.socketio.on('online_users', self.update_online_users)
         self.socketio.on('message_record', self.recv_message_record)
         self.socketio.on('system_info',self.changeSystemInfo)
+        self.socketio.on('log',self.getlog)
         self.username = None
     def update_online_users(self, data):
         time.sleep(1)
@@ -38,6 +39,10 @@ class myChat(QMainWindow, Ui_MainWindow):
         for user in data:
             self.listWidget_2.addItem(user)
 
+
+    def getlog(self,data:list):
+        for i in data:
+            self.message_recv.addItem("[LOG]"+i)
     # 更新系统信息提醒函数
     def changeSystemInfo(self, info):
         self.label_2.setText(info)
@@ -50,12 +55,19 @@ class myChat(QMainWindow, Ui_MainWindow):
 
     def send_message(self):
         text = self.message_input.toPlainText()
+        if text == "":
+            return
+        if text == "/clear":
+            self.message_recv.clear()
+            return
+        if text == "/log_":
+            self.socketio.emit('get_log')
+            return
+        if text == "/get_record":
+            self.socketio.emit('get_record')
+            return
         self.socketio.emit('message', text)
         self.message_input.clear()
-
-
-
-
 
     def login(self):
         state = "login"
