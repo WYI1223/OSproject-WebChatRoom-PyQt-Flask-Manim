@@ -10,11 +10,11 @@ import socketio
 class myChat(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
+
         self.setupUi(self)
         self.LabelConten = ("Login if you have acount, "
                             "\nsignup if you do not have a acount")
         self.label_2.setText(self.LabelConten)
-
 
 
         self.socketio = socketio.Client()
@@ -31,7 +31,6 @@ class myChat(QMainWindow, Ui_MainWindow):
         self.socketio.on('online_users', self.update_online_users)
         self.socketio.on('message_record', self.recv_message_record)
         self.socketio.on('system_info',self.changeSystemInfo)
-
         self.username = None
     def update_online_users(self, data):
         time.sleep(1)
@@ -42,24 +41,27 @@ class myChat(QMainWindow, Ui_MainWindow):
     # 更新系统信息提醒函数
     def changeSystemInfo(self, info):
         self.label_2.setText(info)
-    def recv_message_record(self, data:dict):
-        for msg in data:
-            self.message_recv.addItem(msg['msg'])
+    def recv_message_record(self, data):
+        if data is not None:
+            for i in data:
+                self.message_recv.addItem(data[i])
     def receive_message(self, data):
-        self.message_recv.addItem(data['msg'])
+        self.message_recv.addItem(data)
 
     def send_message(self):
         text = self.message_input.toPlainText()
         self.socketio.emit('message', text)
-        self.message_recv.addItem(text)
         self.message_input.clear()
+
+
+
+
 
     def login(self):
         state = "login"
         self.username = self.username_input.toPlainText()
         self.password = self.password_input.toPlainText()
         data = [str(self.username),str(self.password),"login"]
-        print(data)
         self.socketio.emit('Label',data)
 
 

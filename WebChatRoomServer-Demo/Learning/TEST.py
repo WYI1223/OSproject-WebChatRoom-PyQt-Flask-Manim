@@ -36,7 +36,8 @@ class ChatApp:
 
 
         # 储存聊天记录 [(time,data),(time,data),(time,data)]
-        self.memoryScheduler._write("record", [])
+        self.history_message=[]
+
         # 共享锁
         self.mutex = threading.Lock()
         # 服务器日志
@@ -68,6 +69,7 @@ class ChatApp:
             if username in self.users and password == self.users[username]:
                 self.socketio.emit('system_info', "Login successful ", room=user_id)
                 self.users_id.update({user_id: username})
+                self.socketio.emit('message_record',self.history_message)
             else:
                 self.socketio.emit('system_info', "Check your username or password. Or sign up", room=user_id)
                 return
@@ -151,12 +153,19 @@ class ChatApp:
 
 
     def handle_message(self, data):
+        user_id = request.sid
+        if user_id not in self.users_id:
+            self.socketio.emit('system_info',"You need to login then to send message!")
+            return
+        user_name = self.users_id[user_id]
+        data = user_name+": "+data
         with self.mutex:
             self.socketio.emit('receive_message', data)
 
-        recard = self.memoryScheduler._read("record")
-        recard.append(data)
-        self.memoryScheduler._update("record", recard)
+        self.history_message.append(data)
+        # recard = self.memoryScheduler._read("record")
+        # recard.append(data)
+        # self.memoryScheduler._update("record", recard)
 
         with self.mutex:
             self.log.put("Message received: " + str(data))

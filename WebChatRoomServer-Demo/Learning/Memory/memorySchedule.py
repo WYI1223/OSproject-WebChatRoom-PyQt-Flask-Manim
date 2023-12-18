@@ -14,7 +14,6 @@ from . import diskSim
 # _release(mid) 释放数据
 # _getstate() 返回内存状态
 
-
 class memoryScheduler:
 
     def __init__(self, serverName, length, disk:diskSim):
