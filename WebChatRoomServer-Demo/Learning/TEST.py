@@ -13,10 +13,12 @@ class ChatApp:
         self.app.config['SECRET_KEY'] = 'your_secret_key'
         self.socketio = SocketIO(self.app, cors_allowed_origins="*")
 
+        self.users = {'user_id': 'password'}
 
         # 绑定路由和事件处理函数
         self.app.route('/')(self.index)
         self.socketio.on('connect')(self.handle_connect)
+        self.socketio.on('Label')(self.changeLabel)
         self.socketio.on('disconnect')(self.handle_disconnect)
         self.socketio.on('message')(self.handle_message)
         # self.socketio.on('threads_info_request')(self.handle_threads_info_request)
@@ -30,6 +32,7 @@ class ChatApp:
 
         # 在线用户列表 mid:online_users
         self.memoryScheduler._write("online_users", set())
+        self.users_online = []
 
         # 储存聊天记录 [(time,data),(time,data),(time,data)]
         self.memoryScheduler._write("record", [])
@@ -45,6 +48,45 @@ class ChatApp:
     def savelog(self):
         log_thread = threading.Thread(target=self.savelogqueue,name="savelog")
         log_thread.start()
+
+
+
+    def changeLabel(self,data):
+        user_id = request.sid
+        if data == None:
+            print("done!!!")
+            connect_threads = threading.Thread(target=self.connect_threads,args=(user_id,"admin"), name=("connect_threads:" + user_id))
+            connect_threads.start()
+              #更新线程信息
+            self.handle_threads_info_request()
+            return
+        username = data[0]
+        password = data[1]
+        state = data[2]
+        print("done")
+        print(username)
+        print(password)
+        print(state)
+        if state == "login":
+            print("done")
+            if username in self.users and password == self.users[username]:
+                self.socketio.emit('system_info', "Login successful ", room=user_id)
+            else:
+                self.socketio.emit('system_info', "Check your username or password. Or sign up", room=user_id)
+                return
+            connect_threads = threading.Thread(target=self.connect_threads, args=(user_id, username),
+                                               name=("connect_threads:" + user_id))
+            connect_threads.start()
+            self.handle_threads_info_request()
+
+        if state == "signup":
+            if username in self.users:
+                self.socketio.emit('system_info', "User have signed up")
+            else:
+                self.users.update({username: password})
+                self.socketio.emit('system_info', "Signup successfully")
+                return
+            
     def savelogqueue(self):
         while True:
             with self.log_condition:
@@ -55,18 +97,22 @@ class ChatApp:
                         f.write(log + "\n")
 
 
-    def handle_connect(self):
-        user_id = request.sid
-        connect_threads = threading.Thread(target=self.connect_threads,args=(user_id,), name=("connect_threads:" + user_id))
-        connect_threads.start()
-        # 更新线程信息
-        self.handle_threads_info_request()
+    def handle_connect(self, ):
+            user_id = request.sid
+            print("done!!!")
+            connect_threads = threading.Thread(target=self.connect_threads,args=(user_id,"admin"), name=("connect_threads:" + user_id))
+            connect_threads.start()
+            # 更新线程信息
+            self.handle_threads_info_request()
 
-    def connect_threads(self,user_id):
+
+
+    def connect_threads(self,user_id,username):
         # 为每个用户创建一个线程，用于处理用户的连接请求，防止阻塞主线程。
 
         self.mutex.acquire()
         # 读取内存中的在线用户列表，将新用户添加到列表中，并更新在线用户列表。
+        self.users_online.append(username) # 将用户名添加到在线用户名列表
 
         online_users = self.memoryScheduler._read("online_users")
         online_users.add(user_id)
@@ -172,7 +218,7 @@ class ChatApp:
     def run(self):
         self.start_memory_info_loop()
         self.start_thread_info_loop()
-        self.socketio.run(self.app, debug=True, allow_unsafe_werkzeug=True)
+        self.socketio.run(self.app, debug=True, allow_unsafe_werkzeug=True, port=8080)
 
 
 if __name__ == '__main__':
