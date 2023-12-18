@@ -86,6 +86,7 @@ class Ui_MainWindow(object):
 "    border-radius: 20px;\n"
 "}")
         self.label_2.setObjectName("label_2")
+
         self.password_input = QtWidgets.QTextEdit(self.ChatTable)
         self.password_input.setGeometry(QtCore.QRect(20, 810, 451, 61))
         self.password_input.setStyleSheet("QTextEdit{\n"
